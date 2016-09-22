@@ -4,13 +4,13 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="#/index"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active"><a href="#/com/verify">投诉审核</a></li>
+        <li class="active"><a href="#/com/process">投诉处理</a></li>
     </ol>
 </section>
 <div class="nav-tabs-custom" style="cursor: move;margin-top: 20px;">
     <!-- Tabs within a box -->
     <ul class="nav nav-tabs pull-left ui-sortable-handle">
-        <li ng-class="{'active': tabIndex == 0}"><a ng-click="changeTab(0)">待审核</a></li>
+        <li ng-class="{'active': tabIndex == 0}"><a ng-click="changeTab(0)">处理中</a></li>
         <li ng-class="{'active': tabIndex == 1}"><a ng-click="changeTab(1)">处理完成</a></li>
     </ul>
     <div class="tab-content no-padding">
@@ -82,7 +82,6 @@
                                             <th>投诉时间</th>
                                             <th>投诉类别</th>
                                             <th>状态</th>
-                                            <th>用户评分</th>
                                             <th>操作</th>
                                         </tr>
 
@@ -123,39 +122,3 @@
     </div>
 </div>
 <!-- Main content -->
-
-
-<!--  模态框-审核投诉-->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel"><strong>查看投诉</strong></h4>
-            </div>
-            <div class="modal-body">
-                <div class="post">
-                    <div class="user-block">
-                        <img class="img-circle" src="dist/img/user4-128x128.jpg" alt="user image">
-                        <span class="description" style="font-size: 16px"><b>时间：</b>{{theComplaint['createAt']|date : 'yyyy-MM-dd'}}</span>
-                        <span class="description" style="font-size: 16px"><b>类别：</b>{{typeMap[theComplaint['type']]}}</span>
-                    </div>
-                    <!-- /.user-block -->
-                    <div style="border: #dddddd 1px solid;background: #ECF0F5;padding: 5px; margin: 10px 0;">
-                        {{theComplaint['description']}}
-                    </div>
-                    <h4 ng-if="theComplaint['comImgs'].length > 0" class="description">图片：</h4>
-                    <div class="row">
-                        <div class="col-sm-4" ng-repeat="img in theComplaint['comImgs']">
-                            <img class="img-responsive" ng-src="{{baseImgUrl+img['imageUrl']}}" alt="Photo">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" ng-click="verifyComplaint(true)" class="btn btn-primary" data-dismiss="modal">通过</button>
-                <button type="button" ng-click="verifyComplaint(false)"class="btn btn-danger" data-dismiss="modal">驳回</button>
-            </div>
-        </div>
-    </div>
-</div>
