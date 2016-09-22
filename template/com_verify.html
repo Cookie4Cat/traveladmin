@@ -1,0 +1,166 @@
+<section class="content-header">
+    <h1>
+        <strong>投诉列表</strong>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#/index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active"><a href="#/com/verify">投诉审核</a></li>
+    </ol>
+</section>
+<div class="nav-tabs-custom" style="cursor: move;margin-top: 20px;">
+    <!-- Tabs within a box -->
+    <ul class="nav nav-tabs pull-left ui-sortable-handle">
+        <li ng-class="{'active': tabIndex == 0}"><a ng-click="changeTab(0)">待审核</a></li>
+        <li ng-class="{'active': tabIndex == 1}"><a ng-click="changeTab(1)">处理完成</a></li>
+    </ul>
+    <div class="tab-content no-padding">
+        <div ng-switch="tabIndex">
+            <div class="tab-pane" ng-switch-when="0">
+                <section class="content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>用户ID</th>
+                                            <th>投诉时间</th>
+                                            <th>投诉类别</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        <tr ng-repeat="row in handlingComList">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{row['userId']}}</td>
+                                            <td>{{row['createAt']|date : 'yyyy-MM-dd'}}</td>
+                                            <td>{{typeMap[row['type']]}}</td>
+                                            <td><span class="label label-success">{{row.status}}</span></td>
+                                            <td>
+                                                <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal">查看</a>
+                                            </td>
+
+                                        </tr>
+
+
+                                    </table>
+                                    <!--分页-->
+                                    <div class="box-footer clearfix">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <li><a href="#">&laquo;</a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">&raquo;</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="tab-pane" ng-switch-when="1">
+                <section class="content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>用户ID</th>
+                                            <th>投诉时间</th>
+                                            <th>投诉类别</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        <tr ng-repeat="row in handlingComList">
+                                            <td>{{$index}}</td>
+                                            <td>{{row['userId']}}</td>
+                                            <td>{{row['create_at']|date : 'yyyy-MM-dd'}}</td>
+                                            <td>{{typeMap[row['type']]}}</td>
+                                            <td><span class="label label-success">{{row.status}}</span></td>
+                                            <td>
+                                                <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal">查看</a>
+                                            </td>
+
+                                        </tr>
+
+
+                                    </table>
+                                    <!--分页-->
+                                    <div class="box-footer clearfix">
+                                        <ul class="pagination pagination-sm no-margin pull-right">
+                                            <li><a href="#">&laquo;</a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">&raquo;</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+
+
+<!--  模态框-审核投诉-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"><strong>查看投诉</strong></h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>投诉类别</label>
+                            <span>酒店投诉</span>
+                        </div>
+                        <div class="form-group">
+                            <label >投诉描述</label>
+                            <span>我是描述</span>
+                        </div>
+                        <div class="form-group">
+                            <label >图片附件</label>
+                            <img src="img/1.jpg" alt="" width="50" height="50" style="margin-right: 10px;">
+                            <img src="img/1.jpg" alt="" width="50" height="50" style="margin-right: 10px;">
+                            <img src="img/1.jpg" alt="" width="50" height="50" style="margin-right: 10px;">
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary" data-dismiss="modal">通过</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">驳回</button>
+            </div>
+        </div>
+    </div>
+</div>
