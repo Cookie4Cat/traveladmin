@@ -13,6 +13,10 @@
             templateUrl: "template/com_process.html",
             controller: "comProcessCtrl"
         })
+        .when('/scenic/info',{
+            templateUrl: "template/scenic_info.html",
+            controller: "scenicInfoCtrl"
+        })
         .otherwise({ redirectTo: "/user-index" });
     }]);
     

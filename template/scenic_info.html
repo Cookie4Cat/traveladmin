@@ -1,0 +1,214 @@
+<section class="content-header">
+    <h1>
+        <strong>景区信息管理</strong>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#/user_index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active"><a href="#/scenic/info">景区信息管理</a></li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+                        添加
+                    </button>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <tr>
+                            <th>序号</th>
+                            <th>景区名称</th>
+                            <th>景区级别</th>
+                            <th>景区价格</th>
+                            <th>景区类型</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr ng-repeat="row in scenic">
+                            <td>{{$index + 1}}</td>
+                            <td>{{row['scenicName']}}</td>
+                            <td>{{row['scenicLevel']}}</td>
+                            <td>{{row['scenicPrice']}}</td>
+                            <td>{{row['scenicType']}}</td>
+                            <td>
+                                <a ng-click="viewScenic(row['sid'])" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal">查看</a>
+                                <a ng-click="viewComplaint(row.id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateModal">更新</a>
+                                <a ng-click="viewComplaint(row.id)" class="btn btn-danger btn-sm">删除</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--分页-->
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">添加景区信息</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                            <input type="text" class="form-control" placeholder="名称" ng-model="newScenic['scenicName']" required>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-star-empty"></i></span>
+                            <input type="text" class="form-control" placeholder="级别" ng-model="newScenic['scenicLevel']" required>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                            <input type="text" class="form-control" placeholder="类型" ng-model="newScenic['scenicType']" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                            <input type="text" class="form-control" placeholder="价格" ng-model="newScenic['scenicPrice']" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                            <input type="text" class="form-control" placeholder="地点" ng-model="newScenic['scenicSite']" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span>
+                            <input type="text" class="form-control" placeholder="描述" ng-model="newScenic['scenicDescription']" required>
+                        </div>
+                        <br>
+                        <div>添加图片</div>
+                        <div  class="input-group-btn"style="width:30px;height:30px;position:relative;overflow:hidden;cursor:pointer;left: 7px;">
+                            <span class="glyphicon glyphicon-plus-sign" style="position:absolute;color:#25b4cb;font-size: 24px"></span>
+                            <input type="file" style="width:30px;height:30px;display:block;position:absolute;left:0;top:0;z-index:10;filter:alpha(opacity=0);moz-opacity:0;opacity:0;">
+                        </div>
+                        <div>
+
+                        </div>
+
+                        <div class="row">
+                            <style>
+                                img:hover{
+                                    transform: scale(1.5,1.5);
+                                }
+                                img{
+                                    margin-top: 10px;
+                                }
+                            </style>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">景区信息</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">名称</span>
+                            <span class="form-control">{{theScenic['scenicName']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">级别</span>
+                            <span class="form-control">{{theScenic['scenicLevel']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">价格</span>
+                            <span class="form-control">{{theScenic['scenicPrice']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">类型</span>
+                            <span class="form-control">{{theScenic['scenicType']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">地点</span>
+                            <span class="form-control">{{theScenic['scenicSite']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">描述</span>
+                            <span class="form-control">{{theScenic['scenicDescription']}}</span>
+                        </div>
+                        <br/>
+                        <div style="color: #777">景区图片</div>
+                        <br/>
+                        <div class="row" id="img">
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

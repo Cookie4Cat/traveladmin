@@ -82,6 +82,7 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl,Pag
 });
 
 app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+
     init();
 
     //初始化
@@ -131,3 +132,34 @@ app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImg
     }
 });
 
+//景区信息模块控制器
+app.controller('scenicInfoCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+
+    init();
+
+    //初始化
+    function init() {
+        getScenic(1);
+    }
+    $scope.getScenic = getScenic;
+
+    //获取景区信息
+    function getScenic(page) {
+        $http.get(baseUrl + 'scenic/admin/scenic' + Pager.pageParams(page,pageSize))
+            .success(function (resp) {
+                $scope.scenic = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    }
+
+    //查看某个景区的信息
+    $scope.viewScenic = function (id) {
+        $http.get(baseUrl + 'scenic/admin/scenic/' + id)
+            .success(function (resp) {
+                $scope.theScenic = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    }
+});
