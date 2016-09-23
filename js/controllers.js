@@ -81,7 +81,7 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl,Pag
     }
 });
 
-app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+app.controller('comProcessCtrl',function ($scope,Upload, $http, Pager, baseUrl, baseImgUrl, pageSize) {
 
     init();
 
@@ -129,11 +129,28 @@ app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImg
                 $scope.complaintInteraction = resp;
                 console.log(resp);
             })
+    };
+
+    $scope.test = function () {
+        console.log($scope.files);
+    };
+
+    $scope.upload = function () {
+        Upload.upload({
+            url: baseUrl + 'com/processor/complaints/4/reply',
+            data: {
+                description:"我是描述",
+                userId:2,
+                type:1,
+                file: $scope.files
+            }
+        })
     }
+
 });
 
 //景区信息模块控制器
-app.controller('scenicInfoCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize, Upload) {
 
     init();
 
@@ -161,5 +178,5 @@ app.controller('scenicInfoCtrl',function ($scope, $http, Pager, baseUrl, baseImg
             }).error(function (resp) {
             alert('数据加载失败');
         })
-    }
+    };
 });

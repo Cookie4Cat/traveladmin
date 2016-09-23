@@ -1,4 +1,4 @@
- var app = angular.module('adminApp', ['ngRoute'])
+ var app = angular.module('adminApp', ['ngRoute','ngFileUpload'])
     //路由配置
     .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when("/user-index", {

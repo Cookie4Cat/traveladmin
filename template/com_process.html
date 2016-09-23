@@ -41,7 +41,9 @@
                                             <td>{{typeMap[row['type']]}}</td>
                                             <td><span class="label label-success">{{row.status}}</span></td>
                                             <td>
-                                                <a ng-click="viewComplaintInteraction(row.id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewModal">查看</a>
+                                                <a ng-click="viewComplaintInteraction(row.id)"
+                                                   class="btn btn-primary btn-sm" data-toggle="modal"
+                                                   data-target="#viewModal">查看</a>
                                             </td>
                                         </tr>
                                     </table>
@@ -92,7 +94,8 @@
                                             <td>{{typeMap[row['type']]}}</td>
                                             <td><span class="label label-success">{{row.status}}</span></td>
                                             <td>
-                                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal">查看</a>
+                                                <a class="btn btn-primary btn-sm" data-toggle="modal"
+                                                   data-target="#addModal">查看</a>
                                             </td>
 
                                         </tr>
@@ -126,7 +129,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
                 <h4><strong>回复投诉</strong></h4>
             </div>
             <div class="modal-body">
@@ -134,9 +138,6 @@
                 <!-- DIRECT CHAT PRIMARY -->
                 <div class="box box-primary direct-chat direct-chat-primary">
                     <div class="box-header with-border">
-
-
-
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -155,7 +156,8 @@
                                                 <div>{{row['description']}}</div>
                                                 <div class="row">
                                                     <div class="col-sm-4" ng-repeat="img in row['comImgs']">
-                                                        <img class="img-responsive" ng-src="{{baseImgUrl+img['imageUrl']}}" alt="Photo">
+                                                        <img class="img-responsive"
+                                                             ng-src="{{baseImgUrl+img['imageUrl']}}" alt="Photo">
                                                     </div>
                                                 </div>
                                             </span>
@@ -168,12 +170,12 @@
                                         </div>
                                         <div class="direct-chat-info clearfix">
                                             <span class="direct-chat-name pull-right" style="width: auto">处理人员</span>
-                                    <span class="direct-chat-text pull-right" style="background:white;">
-                                        <div>{{row['description']}}</div>
-                                        <div ng-repeat="img in row['comImgs']">
+                                            <span class="direct-chat-text pull-right" style="background:white;">
+                                                <div>{{row['description']}}</div>
+                                                <div ng-repeat="img in row['comImgs']">
                                                     <img ng-src="{{baseImgUrl+img['imageUrl']}}" alt="">
                                                 </div>
-                                    </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -188,13 +190,15 @@
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-primary btn-flat">发送</button>
                                 </span>
-                                <div  class="input-group-btn" style="width:40px;height:20px;position:relative;overflow:hidden;cursor:pointer;left: 10px;top:5px">
-                                    <span class="glyphicon glyphicon-plus-sign" style="position:absolute;color: lawngreen;font-size: 24px"></span>
-                                    <input type="file" style="width:40px;height:30px;display:block;position:absolute;left:0;top:0;z-index:10;filter:alpha(opacity=0);moz-opacity:0;opacity:0;">
-                                </div>
                             </div>
-
+                            <div class="input-group" style="margin-top: 10px;">
+                                <div class="btn btn-primary" ngf-select ng-model="files" ngf-multiple="true"
+                                     ngf-pattern="'image/*'" ngf-accept="'image/*'">选择图片
+                                </div>
+                                <a class="btn btn-primary" ng-click="upload()">测试</a>
+                            </div>
                         </form>
+                        <div ng-repeat="file in files">{{file.name}}</div>
                     </div>
                     <!-- /.box-footer-->
                 </div>
@@ -203,6 +207,5 @@
         <!--/.direct-chat -->
 
     </div>
-
 </div>
 
