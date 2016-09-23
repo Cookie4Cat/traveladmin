@@ -89,6 +89,7 @@ app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImg
         initTabs();
         getTypes();
         getHandlingComplaints(1);
+        $scope.baseImgUrl = baseImgUrl;
     }
 
     //初始化页卡
@@ -118,6 +119,15 @@ app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImg
             }).error(function (resp) {
             alert('数据加载失败');
         })
+    }
+
+    //查看处理对话
+    $scope.viewComplaintInteraction = function (cid) {
+        $http.get(baseUrl + 'com/processor/complaints/' + cid + '/interaction')
+            .success(function (resp) {
+                $scope.complaintInteraction = resp;
+                console.log(resp);
+            })
     }
 });
 
