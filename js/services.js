@@ -5,7 +5,7 @@ app.service('Pager', function () {
     this.getPagination = function (page, pageSize, count) {
         var pagination = {};
         //计算页数
-        var pageNum = parseInt(count / pageSize) + 1;
+        var pageNum = Math.ceil(count / pageSize);
         //是否显示
         pagination.show = pageNum > 1;
 

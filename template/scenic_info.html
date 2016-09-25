@@ -1,3 +1,12 @@
+<style>
+    img:hover {
+        transform: scale(1.5, 1.5);
+    }
+
+    img {
+        margin-top: 10px;
+    }
+</style>
 <section class="content-header">
     <h1>
         <strong>景区信息管理</strong>
@@ -35,14 +44,16 @@
                             <td>{{row['scenicPrice']}}</td>
                             <td>{{row['scenicType']}}</td>
                             <td>
-                                <a ng-click="viewScenic(row['sid'])" class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewModal">查看</a>
-                                <a ng-click="viewComplaint(row.id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateModal">更新</a>
-                                <a ng-click="viewComplaint(row.id)" class="btn btn-danger btn-sm">删除</a>
+                                <a ng-click="viewScenic(row['sid'])" class="btn btn-success btn-sm" data-toggle="modal"
+                                   data-target="#viewModal">查看</a>
+                                <a ng-click="viewUpdateScenic(row['sid'])" class="btn btn-primary btn-sm"
+                                   data-toggle="modal" data-target="#updateModal">更新</a>
+                                <a ng-click="deleteScenic(row['sid'])" class="btn btn-danger btn-sm">删除</a>
                             </td>
                         </tr>
                     </table>
                     <!--分页-->
-                    <div class="box-footer clearfix" ng-if="pagination">
+                    <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
                         <ul class="pagination pagination-sm no-margin pull-right">
                             <li><a ng-click="getScenic(pagination.last)">&laquo;</a></li>
                             <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
@@ -69,80 +80,69 @@
                         <h3 class="box-title">添加景区信息</h3>
                     </div>
                     <div class="box-body">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                            <input type="text" class="form-control" placeholder="名称" ng-model="newScenic['scenicName']" required>
-                        </div>
-                        <br/>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-star-empty"></i></span>
-                            <input type="text" class="form-control" placeholder="级别" ng-model="newScenic['scenicLevel']" required>
-                        </div>
-                        <br/>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
-                            <input type="text" class="form-control" placeholder="类型" ng-model="newScenic['scenicType']" required>
-                        </div>
-                        <br>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
-                            <input type="text" class="form-control" placeholder="价格" ng-model="newScenic['scenicPrice']" required>
-                        </div>
-                        <br>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                            <input type="text" class="form-control" placeholder="地点" ng-model="newScenic['scenicSite']" required>
-                        </div>
-                        <br>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span>
-                            <input type="text" class="form-control" placeholder="描述" ng-model="newScenic['scenicDescription']" required>
-                        </div>
-                        <br>
-                        <div>添加图片</div>
-                        <div  class="input-group-btn"style="width:30px;height:30px;position:relative;overflow:hidden;cursor:pointer;left: 7px;">
-                            <span class="glyphicon glyphicon-plus-sign" style="position:absolute;color:#25b4cb;font-size: 24px"></span>
-                            <input type="file" style="width:30px;height:30px;display:block;position:absolute;left:0;top:0;z-index:10;filter:alpha(opacity=0);moz-opacity:0;opacity:0;">
-                        </div>
+
+                        <form enctype="multipart/form-data" name="addForm">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                                <input name="scenicName" type="text" class="form-control" placeholder="名称" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                                <input name="city" type="text" class="form-control" placeholder="城市" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-star-empty"></i></span>
+                                <input name="scenicLevel" type="text" class="form-control" placeholder="级别" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <input name="scenicType" type="text" class="form-control" placeholder="类型" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <input name="scenicPrice" type="text" class="form-control" placeholder="价格" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                <input name="scenicSite" type="text" class="form-control" placeholder="地点" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                <input name="scenicArea" type="text" class="form-control" placeholder="面积" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span>
+                                <input name="scenicDescription" type="text" class="form-control" placeholder="描述"
+                                       required>
+                            </div>
+                            <div class="input-group" style="margin: 10px 0;">
+                                <label for="replyImages">图片：</label>
+                                <input type="file" name="file" id="replyImages" multiple accept="image/*">
+                            </div>
+                            <br>
+                        </form>
                         <div>
-
                         </div>
-
-                        <div class="row">
-                            <style>
-                                img:hover{
-                                    transform: scale(1.5,1.5);
-                                }
-                                img{
-                                    margin-top: 10px;
-                                }
-                            </style>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                        </div>
-                        <!-- /input-group -->
                     </div>
-                    <!-- /.box-body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" ng-click="addScenic()" data-dismiss="modal">添加
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">添加</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -155,6 +155,11 @@
                         <div class="input-group">
                             <span class="input-group-addon">名称</span>
                             <span class="form-control">{{theScenic['scenicName']}}</span>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">城市</span>
+                            <span class="form-control">{{theScenic['city']}}</span>
                         </div>
                         <br/>
                         <div class="input-group">
@@ -178,27 +183,20 @@
                         </div>
                         <br/>
                         <div class="input-group">
+                            <span class="input-group-addon">面积</span>
+                            <span class="form-control">{{theScenic['scenicArea']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
                             <span class="input-group-addon">描述</span>
                             <span class="form-control">{{theScenic['scenicDescription']}}</span>
                         </div>
                         <br/>
-                        <div style="color: #777">景区图片</div>
+                        <div style="color: #777" ng-show="theScenic['imgs'].length > 0">景区图片</div>
                         <br/>
                         <div class="row" id="img">
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
-                            </div>
-                            <div class="col-md-3">
-                                <img src="dist/img/photo1.png" alt="" width="100%"/>
+                            <div class="col-md-3" ng-repeat="img in theScenic['imgs']">
+                                <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
                             </div>
                         </div>
                         <!-- /input-group -->
@@ -208,6 +206,94 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 更新模态框 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">添加景区信息</h3>
+                    </div>
+                    <div class="box-body">
+
+                        <form enctype="multipart/form-data" name="updateForm">
+                            <div class="input-group">
+                                <span class="input-group-addon">名称</span>
+                                <input type="text" class="form-control" placeholder="名称"
+                                       name="scenicName" ng-model="updateScenic['scenicName']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">城市</span>
+                                <input type="text" class="form-control" placeholder="城市"
+                                       name="city" ng-model="updateScenic['city']" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon">级别</span>
+                                <input type="text" class="form-control" placeholder="级别"
+                                       name="scenicLevel" ng-model="updateScenic['scenicLevel']" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon">类型</span>
+                                <input type="text" class="form-control" placeholder="类型"
+                                       name="scenicType" ng-model="updateScenic['scenicType']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">价格</span>
+                                <input type="text" class="form-control" placeholder="价格"
+                                       name="scenicPrice" ng-model="updateScenic['scenicPrice']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">地点</span>
+                                <input type="text" class="form-control" placeholder="地点"
+                                       name="scenicSite" ng-model="updateScenic['scenicSite']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">面积</span>
+                                <input type="text" class="form-control" placeholder="面积"
+                                       name="scenicArea" ng-model="updateScenic['scenicArea']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">描述</span>
+                                <input type="text" class="form-control" placeholder="描述"
+                                       name="scenicDescription" ng-model="updateScenic['scenicDescription']" required>
+                            </div>
+                            <br>
+                            <div style="color: #777" ng-show="updateScenic['imgs'].length > 0">景区图片</div>
+                            <div class="row">
+                                <div class="col-md-3" ng-repeat="img in updateScenic['imgs']" ng-if="img.url">
+                                    <span ng-click="addToRemovePool(img.id)" class="pull-right"><i style="color:red" class="glyphicon glyphicon-remove"></i></span>
+                                    <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="input-group" style="margin: 10px 0;">
+                                <label for="replyImages">图片：</label>
+                                <input type="file" name="file" id="updateImages" multiple accept="image/*">
+                            </div>
+                        </form>
+                        <div>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="update()">更新</button>
             </div>
         </div>
     </div>
