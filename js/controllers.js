@@ -295,5 +295,107 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
             //error
         })
     }
+});
 
+//游记控制器
+app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+    init();
+
+    //初始化
+    function init() {
+        $scope.baseImgUrl = baseImgUrl;
+    }
+
+    //获取文章信息
+    $scope.getArticles = function (page) {
+        $http.get(baseUrl + 'article/admin/articles' + Pager.pageParams(page, pageSize))
+            .success(function (resp) {
+                $scope.articles = resp['articles'];
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    //获取第一页
+    $scope.getArticles(1);
+
+    //查看某个游记的信息
+    $scope.viewArticle = function (id) {
+        $http.get(baseUrl + 'article/admin/articles/' + id)
+            .success(function (resp) {
+                $scope.theArticle = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //增加游记
+    $scope.addArticle = function () {
+        var formData = new FormData(document.forms.namedItem("addForm"));
+        $http({
+            method: 'POST',
+            url: baseUrl + 'article/admin/articles',
+            data: formData,
+            headers: {'Content-Type': undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成添加!", "success");
+            $scope.getScenic($scope.pagination.current);
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+    };
+    
+    //查看待更新的游记
+    $scope.viewUpdateArticle = function (id) {
+        $http.get(baseUrl + 'article/admin/articles/' + id)
+            .success(function (resp) {
+                $scope.updateArticle = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    
+    //更新游记
+    $scope.update = function (id) {
+        var formData = new FormData(document.forms.namedItem("updateForm"));
+        $http({
+            method: 'POST',
+            url: baseUrl + 'article/admin/articles/' + id,
+            data: formData,
+            headers: {'Content-Type': undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成添加!", "success");
+            $scope.getArticles($scope.pagination.current);
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+    };
+
+    //删除游记
+    $scope.deleteArticle = function (id) {
+        swal({
+            title: "您确定删除此项记录?",
+            text: "此项记录将被永久删除",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "继续删除",
+            cancelButtonText:"取消",
+            closeOnConfirm: false
+        }, function () {
+            $http.post(baseUrl + 'article/admin/articles/' + id + '/delete', null)
+                .success(function (resp) {
+                    swal("操作成功!", "成功删除!", "success");
+                    $scope.getArticles($scope.pagination.current);
+                }).error(function (resp) {
+                swal("操作失败!", "出现错误!", "error");
+            })
+        });
+    };
+    
 });

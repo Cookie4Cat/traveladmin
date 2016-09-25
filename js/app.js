@@ -17,6 +17,10 @@
             templateUrl: "template/scenic_info.html",
             controller: "scenicInfoCtrl"
         })
+        .when('/article/curd',{
+            templateUrl: "template/article_curd.html",
+            controller: "articleCurdCtrl"
+        })
         .otherwise({ redirectTo: "/user-index" });
     }]);
     
