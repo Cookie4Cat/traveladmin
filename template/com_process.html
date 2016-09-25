@@ -49,16 +49,15 @@
                                     </table>
                                     <div ng-if="handlingComList.length == 0" style="text-align: center">无数据显示</div>
                                     <!--分页-->
-                                    <div class="box-footer clearfix">
+                                    <div class="box-footer clearfix" ng-if="pagination">
                                         <ul class="pagination pagination-sm no-margin pull-right">
-                                            <li><a href="#">&laquo;</a></li>
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">&raquo;</a></li>
+                                            <li><a ng-click="getHandlingComplaints(pagination.last)">&laquo;</a></li>
+                                            <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
+                                                <a ng-click="getHandlingComplaints(p)">{{p}}</a>
+                                            </li>
+                                            <li><a ng-click="getHandlingComplaints(pagination.next)">&raquo;</a></li>
                                         </ul>
                                     </div>
-
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -103,16 +102,15 @@
                                     </table>
                                     <div ng-if="handlingComList.length == 0" style="text-align: center">无数据显示</div>
                                     <!--分页-->
-                                    <div class="box-footer clearfix">
+                                    <div class="box-footer clearfix" ng-if="pagination">
                                         <ul class="pagination pagination-sm no-margin pull-right">
-                                            <li><a href="#">&laquo;</a></li>
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">&raquo;</a></li>
+                                            <li><a ng-click="getHandlingComplaints(pagination.last)">&laquo;</a></li>
+                                            <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
+                                                <a ng-click="getHandlingComplaints(p)">{{p}}</a>
+                                            </li>
+                                            <li><a ng-click="getHandlingComplaints(pagination.next)">&raquo;</a></li>
                                         </ul>
                                     </div>
-
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -184,28 +182,26 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <form action="#" method="post">
+                        <form enctype='multipart/form-data' name="myForm" ng-show="showSubmitBtn">
+                            <div class="input-group" style="margin-bottom: 10px;">
+                                <label for="replyImages">图片：</label>
+                                <input type="file" name="file" id="replyImages" multiple accept="image/*">
+                            </div>
                             <div class="input-group">
-                                <input type="text" name="message" placeholder="输入消息 ..." class="form-control">
+                                <input type="text" name="description" placeholder="输入消息 ..." class="form-control">
                                 <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-primary btn-flat">发送</button>
+                                    <button type="submit" class="btn btn-primary btn-flat" ng-click="reply()" data-dismiss="modal">发送</button>
                                 </span>
                             </div>
-                            <div class="input-group" style="margin-top: 10px;">
-                                <div class="btn btn-primary" ngf-select ng-model="files" ngf-multiple="true"
-                                     ngf-pattern="'image/*'" ngf-accept="'image/*'">选择图片
-                                </div>
-                                <a class="btn btn-primary" ng-click="upload()">测试</a>
-                            </div>
                         </form>
-                        <div ng-repeat="file in files">{{file.name}}</div>
                     </div>
                     <!-- /.box-footer-->
                 </div>
             </div>
         </div>
         <!--/.direct-chat -->
-
     </div>
 </div>
+
+
 

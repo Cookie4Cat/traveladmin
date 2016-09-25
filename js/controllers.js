@@ -16,7 +16,6 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl,Pag
     function init() {
         initTabs();
         getTypes();
-        getHandlingComplaints(1);
         $scope.baseImgUrl = baseImgUrl;
     }
 
@@ -40,14 +39,19 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl,Pag
     }
 
     //获取待审核的投诉
-    function getHandlingComplaints(page) {
+    $scope.getHandlingComplaints = function(page) {
         $http.get(baseUrl + 'com/admin/complaints' + Pager.pageParams(page,pageSize))
             .success(function (resp) {
                 $scope.handlingComList = resp['complaints'];
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page,pageSize,resp['count']);
             }).error(function (resp) {
                 alert('数据加载失败');
             })
-    }
+    };
+
+    //获取第一页待审核投诉
+    $scope.getHandlingComplaints(1);
 
     //查看待审核投诉
     $scope.viewComplaint = function (cid) {
@@ -81,7 +85,7 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl,Pag
     }
 });
 
-app.controller('comProcessCtrl',function ($scope,Upload, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+app.controller('comProcessCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
 
     init();
 
@@ -89,7 +93,6 @@ app.controller('comProcessCtrl',function ($scope,Upload, $http, Pager, baseUrl, 
     function init() {
         initTabs();
         getTypes();
-        getHandlingComplaints(1);
         $scope.baseImgUrl = baseImgUrl;
     }
 
@@ -113,62 +116,75 @@ app.controller('comProcessCtrl',function ($scope,Upload, $http, Pager, baseUrl, 
     }
 
     //获取处理中的投诉
-    function getHandlingComplaints(page) {
+    $scope.getHandlingComplaints = function(page) {
         $http.get(baseUrl + 'com/processor/complaints' + Pager.pageParams(page,pageSize))
             .success(function (resp) {
                 $scope.handlingComList = resp['complaints'];
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page,pageSize,resp['count']);
             }).error(function (resp) {
             alert('数据加载失败');
         })
-    }
+    };
+
+    //获取第一页
+    $scope.getHandlingComplaints(1);
 
     //查看处理对话
     $scope.viewComplaintInteraction = function (cid) {
         $http.get(baseUrl + 'com/processor/complaints/' + cid + '/interaction')
             .success(function (resp) {
                 $scope.complaintInteraction = resp;
+                //根据一来一回的原则判断是否显示回复按钮
+                $scope.showSubmitBtn = $scope.complaintInteraction.length%2==1;
                 console.log(resp);
             })
     };
 
-    $scope.test = function () {
-        console.log($scope.files);
-    };
-
-    $scope.upload = function () {
-        Upload.upload({
-            url: baseUrl + 'com/processor/complaints/4/reply',
-            data: {
-                description:"我是描述",
-                userId:2,
-                type:1,
-                file: $scope.files
-            }
-        })
+    //回复游客的投诉
+    $scope.reply = function () {
+        var replyId = $scope.complaintInteraction[$scope.complaintInteraction.length - 1]['id'];
+        var formData = new FormData(document.forms.namedItem("myForm"));
+        formData.append('userId',2);
+        $http({
+            method: 'POST',
+            url: baseUrl + 'com/processor/complaints/' + replyId + '/reply',
+            data: formData,
+            headers: {'Content-Type':undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成回复!", "success");
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "success");
+        });
     }
 
 });
 
 //景区信息模块控制器
-app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize, Upload) {
+app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
 
     init();
 
     //初始化
     function init() {
-        getScenic(1);
+
     }
-    $scope.getScenic = getScenic;
 
     //获取景区信息
-    function getScenic(page) {
+    $scope.getScenic = function(page) {
         $http.get(baseUrl + 'scenic/admin/scenic' + Pager.pageParams(page,pageSize))
             .success(function (resp) {
                 $scope.scenic = resp;
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page,pageSize,resp['count']);
             }).error(function (resp) {
             alert('数据加载失败');
         })
-    }
+    };
+    //获取第一页
+    $scope.getScenic(1);
 
     //查看某个景区的信息
     $scope.viewScenic = function (id) {
@@ -179,4 +195,6 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
             alert('数据加载失败');
         })
     };
+
+
 });

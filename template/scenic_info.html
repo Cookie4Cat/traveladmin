@@ -42,13 +42,13 @@
                         </tr>
                     </table>
                     <!--分页-->
-                    <div class="box-footer clearfix">
+                    <div class="box-footer clearfix" ng-if="pagination">
                         <ul class="pagination pagination-sm no-margin pull-right">
-                            <li><a href="#">&laquo;</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">&raquo;</a></li>
+                            <li><a ng-click="getScenic(pagination.last)">&laquo;</a></li>
+                            <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
+                                <a ng-click="getScenic(p)">{{p}}</a>
+                            </li>
+                            <li><a ng-click="getScenic(pagination.next)">&raquo;</a></li>
                         </ul>
                     </div>
 
