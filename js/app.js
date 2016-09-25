@@ -21,6 +21,10 @@
             templateUrl: "template/article_curd.html",
             controller: "articleCurdCtrl"
         })
+        .when('/hotel/curd',{
+            templateUrl: "template/hotel_curd.html",
+            controller: "hotelCurdCtrl"
+        })
         .otherwise({ redirectTo: "/user-index" });
     }]);
     

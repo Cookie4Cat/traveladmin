@@ -397,5 +397,137 @@ app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseIm
             })
         });
     };
-    
+});
+
+//酒店信息管理模块
+app.controller('hotelCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+    init();
+
+    //初始化
+    function init() {
+        $scope.baseImgUrl = baseImgUrl;
+    }
+
+    //获取酒店信息
+    $scope.getHotels = function (page) {
+        $http.get(baseUrl + 'hotel/admin/hotels' + Pager.pageParams(page, pageSize))
+            .success(function (resp) {
+                $scope.scenic = resp['hotels'];
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    //获取第一页
+    $scope.getHotels(1);
+
+    //查看某个酒店的信息
+    $scope.viewHotel = function (id) {
+        $http.get(baseUrl + 'hotel/admin/hotels/' + id)
+            .success(function (resp) {
+                $scope.theHotel = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //添加酒店信息
+    $scope.addHotel = function () {
+        var formData = new FormData(document.forms.namedItem("addForm"));
+        $http({
+            method: 'POST',
+            url: baseUrl + 'hotel/admin/hotels',
+            data: formData,
+            headers: {'Content-Type': undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成添加!", "success");
+            $scope.getHotels($scope.pagination.current);
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+    };
+
+    //获取待更新的酒店信息
+    $scope.viewUpdateHotel = function (id) {
+        $http.get(baseUrl + 'hotel/admin/hotels/' + id)
+            .success(function (resp) {
+                $scope.updateHotel = resp;
+                console.log(resp);
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //删除景区信息
+    $scope.deleteHotel = function (id) {
+        swal({
+            title: "您确定删除此项记录?",
+            text: "此项记录将被永久删除",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "继续删除",
+            cancelButtonText:"取消",
+            closeOnConfirm: false
+        }, function () {
+            $http.post(baseUrl + 'hotel/admin/hotels/' + id + '/delete', null)
+                .success(function (resp) {
+                    swal("操作成功!", "成功删除!", "success");
+                    $scope.getHotels($scope.pagination.current);
+                }).error(function (resp) {
+                swal("操作失败!", "出现错误!", "error");
+            })
+        });
+    };
+
+    //待删除的图片列表
+    $scope.removeImgPool = [];
+
+    //添加待删除图片
+    $scope.addToRemovePool = function (id) {
+        var emptyImg = {id: 0};
+        $scope.removeImgPool.push(id);
+        for (i in $scope.updateHotel['imgs']) {
+            if ($scope.updateHotel['imgs'][i].id == id) {
+                $scope.updateHotel['imgs'][i] = emptyImg;
+            }
+        }
+    };
+
+    //更新
+    $scope.update = function () {
+        //删除待删除图片
+        for (i in $scope.removeImgPool) {
+            removeImg($scope.removeImgPool[i]);
+        }
+
+        var formData = new FormData(document.forms.namedItem("updateForm"));
+        $http({
+            method: 'POST',
+            url: baseUrl + 'hotel/admin/hotels/' + $scope.updateHotel['id'],
+            data: formData,
+            headers: {'Content-Type': undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成更新!", "success");
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+
+        $scope.removeImgPool = [];
+    };
+
+    //删除一个图片
+    function removeImg(id) {
+        $http.post(baseUrl + 'scenic/admin/image/' + id + '/delete', null)
+            .success(function (resp) {
+                //success
+            }).error(function (resp) {
+            //error
+        })
+    }
 });

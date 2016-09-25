@@ -1,0 +1,263 @@
+<style>
+    img:hover {
+        transform: scale(1.5, 1.5);
+    }
+
+    img {
+        margin-top: 10px;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        <strong>景区信息管理</strong>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#/user_index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active"><a href="#/hotel/curd">景区信息管理</a></li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+                        添加
+                    </button>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <tr>
+                            <th>序号</th>
+                            <th>酒店名称</th>
+                            <th>所属景区</th>
+                            <th>酒店类型</th>
+                            <th>价格</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr ng-repeat="row in scenic">
+                            <td>{{$index + 1}}</td>
+                            <td>{{row['name']}}</td>
+                            <td>{{row['scenicId']}}</td>
+                            <td>{{row['type']}}</td>
+                            <td>{{row['price']}}</td>
+                            <td>
+                                <a ng-click="viewHotel(row['id'])" class="btn btn-success btn-sm" data-toggle="modal"
+                                   data-target="#viewModal">查看</a>
+                                <a ng-click="viewUpdateHotel(row['id'])" class="btn btn-primary btn-sm"
+                                   data-toggle="modal" data-target="#updateModal">更新</a>
+                                <a ng-click="deleteHotel(row['id'])" class="btn btn-danger btn-sm">删除</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--分页-->
+                    <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <li><a ng-click="getHotels(pagination.last)">&laquo;</a></li>
+                            <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
+                                <a ng-click="getHotels(p)">{{p}}</a>
+                            </li>
+                            <li><a ng-click="getHotels(pagination.next)">&raquo;</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">添加酒店信息</h3>
+                    </div>
+                    <div class="box-body">
+
+                        <form enctype="multipart/form-data" name="addForm">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                                <input name="name" type="text" class="form-control" placeholder="名称" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                                <input name="scenicId" type="text" class="form-control" placeholder="景区" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-star-empty"></i></span>
+                                <input name="type" type="text" class="form-control" placeholder="类型" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <input name="price" type="text" class="form-control" placeholder="价格" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <input name="totalRoom" type="number" class="form-control" placeholder="房间总数" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                <input name="bookedRoom" type="number" class="form-control" placeholder="被预订数量" required>
+                            </div>
+                            <br>
+                            <div class="input-group" style="margin: 10px 0;">
+                                <label for="replyImages">图片：</label>
+                                <input type="file" name="file" id="replyImages" multiple accept="image/*">
+                            </div>
+                            <br>
+                        </form>
+                        <div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" ng-click="addHotel()" data-dismiss="modal">添加
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">酒店信息</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">名称</span>
+                            <span class="form-control">{{theHotel['name']}}</span>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">景区</span>
+                            <span class="form-control">{{theHotel['scenicId']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">类型</span>
+                            <span class="form-control">{{theHotel['type']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">价格</span>
+                            <span class="form-control">{{theHotel['price']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">房间总数</span>
+                            <span class="form-control">{{theHotel['totalRoom']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">被预定数量</span>
+                            <span class="form-control">{{theHotel['bookedRoom']}}</span>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div style="color: #777">酒店图片</div>
+                        <br/>
+                        <div class="row" id="img">
+                            <div class="col-md-3" ng-repeat="img in theHotel['imgs']">
+                                <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 更新模态框 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">更新酒店信息</h3>
+                    </div>
+                    <div class="box-body">
+
+                        <form enctype="multipart/form-data" name="updateForm">
+                            <div class="input-group">
+                                <span class="input-group-addon">名称</span>
+                                <input name="name" type="text" class="form-control" ng-model="updateHotel['name']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">景区</span>
+                                <input name="scenicId" type="text" class="form-control" ng-model="updateHotel['scenicId']" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon">类型</span>
+                                <input name="type" type="text" class="form-control" ng-model="updateHotel['type']" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon">价格</span>
+                                <input name="price" type="text" class="form-control" ng-model="updateHotel['price']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">房间总数</span>
+                                <input name="totalRoom" type="number" class="form-control" ng-model="updateHotel['totalRoom']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">被预订数量</span>
+                                <input name="bookedRoom" type="number" class="form-control" ng-model="updateHotel['bookedRoom']" required>
+                            </div>
+                            <br>
+                            <div style="color: #777" ng-show="updateHotel['imgs'].length > 0">酒店图片</div>
+                            <div class="row">
+                                <div class="col-md-3" ng-repeat="img in updateHotel['imgs']" ng-if="img.url">
+                                    <span ng-click="addToRemovePool(img.id)" class="pull-right"><i style="color:red" class="glyphicon glyphicon-remove"></i></span>
+                                    <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="input-group" style="margin: 10px 0;">
+                                <label for="replyImages">图片：</label>
+                                <input type="file" name="file" id="updateImages" multiple accept="image/*">
+                            </div>
+                        </form>
+                        <div>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="update()">更新</button>
+            </div>
+        </div>
+    </div>
+</div>
