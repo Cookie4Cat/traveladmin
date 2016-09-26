@@ -427,7 +427,7 @@ app.controller('hotelCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImg
     $scope.getHotels = function (page) {
         $http.get(baseUrl + 'hotel/admin/hotels' + Pager.pageParams(page, pageSize))
             .success(function (resp) {
-                $scope.scenic = resp['hotels'];
+                $scope.hotels = resp['hotels'];
                 //获取分页器
                 $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
             }).error(function (resp) {
@@ -654,7 +654,155 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
         var formData = new FormData(document.forms.namedItem("updateForm"));
         $http({
             method: 'POST',
-            url: baseUrl + 'performance/admin/performances/' + $scope.updateHotel['id'],
+            url: baseUrl + 'performance/admin/performances/' + $scope.updatePerformance['id'],
+            data: formData,
+            headers: {'Content-Type': undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成更新!", "success");
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+
+        $scope.removeImgPool = [];
+    };
+
+    //删除一个图片
+    function removeImg(id) {
+        $http.post(baseUrl + 'scenic/admin/image/' + id + '/delete', null)
+            .success(function (resp) {
+                //success
+            }).error(function (resp) {
+            //error
+        })
+    }
+});
+
+//餐饮信息控制器
+app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+    init();
+
+    //初始化
+    function init() {
+        $scope.baseImgUrl = baseImgUrl;
+        getScenicInfo();
+    }
+
+    //获取景区LOV
+    function getScenicInfo() {
+        $http.get(baseUrl + 'scenic/admin/scenic' + Pager.pageParams(1, 10))
+            .success(function (resp) {
+                $scope.scenicLOV = {};
+                var scenicList = resp['scenicEntities'];
+                for (i in scenicList) {
+                    $scope.scenicLOV[scenicList[i]['sid']] = scenicList[i]['scenicName'];
+                }
+            }).error(function (resp) {
+            alert('数据加载出错');
+        })
+    }
+
+    //获取餐饮信息
+    $scope.getCanteens = function (page) {
+        $http.get(baseUrl + 'canteen/admin/canteens' + Pager.pageParams(page, pageSize))
+            .success(function (resp) {
+                $scope.canteens = resp['hotels'];
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    //获取第一页
+    $scope.getCanteens(1);
+
+    //查看某个餐饮信息
+    $scope.viewCanteen = function (id) {
+        $http.get(baseUrl + 'canteen/admin/canteens/' + id)
+            .success(function (resp) {
+                $scope.theCanteen = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //添加餐饮信息
+    $scope.addCanteen = function () {
+        var formData = new FormData(document.forms.namedItem("addForm"));
+        $http({
+            method: 'POST',
+            url: baseUrl + 'canteen/admin/canteens',
+            data: formData,
+            headers: {'Content-Type': undefined}
+        }).success(function (data) {
+            //上传成功
+            swal("操作成功!", "完成添加!", "success");
+            $scope.getCanteens($scope.pagination.current);
+        }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+    };
+
+    //获取待更新的餐饮信息
+    $scope.viewUpdateCanteen= function (id) {
+        $http.get(baseUrl + 'canteen/admin/canteens/' + id)
+            .success(function (resp) {
+                $scope.updateCanteen = resp;
+                console.log(resp);
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //删除餐饮信息
+    $scope.deleteCanteen = function (id) {
+        swal({
+            title: "您确定删除此项记录?",
+            text: "此项记录将被永久删除",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "继续删除",
+            cancelButtonText:"取消",
+            closeOnConfirm: false
+        }, function () {
+            $http.post(baseUrl + 'canteen/admin/canteens/' + id + '/delete', null)
+                .success(function (resp) {
+                    swal("操作成功!", "成功删除!", "success");
+                    $scope.getCanteens($scope.pagination.current);
+                }).error(function (resp) {
+                swal("操作失败!", "出现错误!", "error");
+            })
+        });
+    };
+
+    //待删除的图片列表
+    $scope.removeImgPool = [];
+
+    //添加待删除图片
+    $scope.addToRemovePool = function (id) {
+        var emptyImg = {id: 0};
+        $scope.removeImgPool.push(id);
+        for (i in $scope.updateCanteen['imgs']) {
+            if ($scope.updateCanteen['imgs'][i].id == id) {
+                $scope.updateCanteen['imgs'][i] = emptyImg;
+            }
+        }
+    };
+
+    //更新
+    $scope.update = function () {
+        //删除待删除图片
+        for (i in $scope.removeImgPool) {
+            removeImg($scope.removeImgPool[i]);
+        }
+
+        var formData = new FormData(document.forms.namedItem("updateForm"));
+        $http({
+            method: 'POST',
+            url: baseUrl + 'canteen/admin/canteens/' + $scope.updateCanteen['id'],
             data: formData,
             headers: {'Content-Type': undefined}
         }).success(function (data) {

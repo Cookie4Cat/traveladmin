@@ -29,6 +29,10 @@
             templateUrl: "template/performance_curd.html",
             controller: "performanceCurdCtrl"
         })
+        .when('/canteen/curd',{
+            templateUrl: "template/canteen_curd.html",
+            controller: "canteenCurdCtrl"
+        })
         .otherwise({ redirectTo: "/user-index" });
     }]);
     
