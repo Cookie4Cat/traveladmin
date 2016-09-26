@@ -44,22 +44,22 @@
                             <td>{{row['type']}}</td>
                             <td>{{row['price']}}</td>
                             <td>
-                                <a ng-click="viewHotel(row['id'])" class="btn btn-success btn-sm" data-toggle="modal"
+                                <a ng-click="viewPerformance(row['id'])" class="btn btn-success btn-sm" data-toggle="modal"
                                    data-target="#viewModal">查看</a>
-                                <a ng-click="viewUpdateHotel(row['id'])" class="btn btn-primary btn-sm"
+                                <a ng-click="viewUpdatePerformance(row['id'])" class="btn btn-primary btn-sm"
                                    data-toggle="modal" data-target="#updateModal">更新</a>
-                                <a ng-click="deleteHotel(row['id'])" class="btn btn-danger btn-sm">删除</a>
+                                <a ng-click="deletePerformance(row['id'])" class="btn btn-danger btn-sm">删除</a>
                             </td>
                         </tr>
                     </table>
                     <!--分页-->
                     <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
                         <ul class="pagination pagination-sm no-margin pull-right">
-                            <li><a ng-click="getHotels(pagination.last)">&laquo;</a></li>
+                            <li><a ng-click="getPerformances(pagination.last)">&laquo;</a></li>
                             <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
-                                <a ng-click="getHotels(p)">{{p}}</a>
+                                <a ng-click="getPerformances(p)">{{p}}</a>
                             </li>
-                            <li><a ng-click="getHotels(pagination.next)">&raquo;</a></li>
+                            <li><a ng-click="getPerformances(pagination.next)">&raquo;</a></li>
                         </ul>
                     </div>
 
@@ -123,7 +123,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" ng-click="addHotel()" data-dismiss="modal">添加
+                        <button type="button" class="btn btn-primary" ng-click="addPerformance()" data-dismiss="modal">添加
                         </button>
                     </div>
                 </div>
