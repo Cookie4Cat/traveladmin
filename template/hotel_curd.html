@@ -40,7 +40,7 @@
                         <tr ng-repeat="row in scenic">
                             <td>{{$index + 1}}</td>
                             <td>{{row['name']}}</td>
-                            <td>{{row['scenicId']}}</td>
+                            <td>{{scenicLOV[row['scenicId']]}}</td>
                             <td>{{row['type']}}</td>
                             <td>{{row['price']}}</td>
                             <td>
@@ -83,15 +83,17 @@
 
                         <form enctype="multipart/form-data" name="addForm">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                                <input name="name" type="text" class="form-control" placeholder="名称" required>
+                                <span class="input-group-addon">景区</span>
+                                <select name="scenicId" class="form-control">
+                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
+                                </select>
                             </div>
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                                <input name="scenicId" type="text" class="form-control" placeholder="景区" required>
+                                <input name="name" type="text" class="form-control" placeholder="名称" required>
                             </div>
-                            <br/>
+                            <br>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-star-empty"></i></span>
                                 <input name="type" type="text" class="form-control" placeholder="类型" required>
@@ -149,7 +151,7 @@
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">景区</span>
-                            <span class="form-control">{{theHotel['scenicId']}}</span>
+                            <span class="form-control">{{scenicLOV[theHotel['scenicId']]}}</span>
                         </div>
                         <br/>
                         <div class="input-group">
@@ -211,8 +213,11 @@
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon">景区</span>
-                                <input name="scenicId" type="text" class="form-control" ng-model="updateHotel['scenicId']" required>
+                                <select name="scenicId" class="form-control" ng-value="updateHotel['scenicId']">
+                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
+                                </select>
                             </div>
+                            <br>
                             <br/>
                             <div class="input-group">
                                 <span class="input-group-addon">类型</span>
