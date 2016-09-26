@@ -41,7 +41,8 @@
                             <td>{{$index + 1}}</td>
                             <td>{{row['title']}}</td>
                             <td>{{row['author']}}</td>
-                            <td>{{row['creatAt'] | date : 'yyyy-MM-dd'}}</td>
+                            <td>{{scenicLOV[row['scenicId']]}}</td>
+                            <td>{{row['createAt'] | date : 'yyyy-MM-dd'}}</td>
                             <td>
                                 <a ng-click="viewEmergency(row['id'])" class="btn btn-success btn-sm" data-toggle="modal"
                                    data-target="#viewModal">查看</a>
@@ -79,30 +80,27 @@
                         <h3 class="box-title">添加应急信息</h3>
                     </div>
                     <div class="box-body">
-                        <form enctype="multipart/form-data" name="addForm">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-font"></i></span>
-                                <input name="title" type="text" class="form-control" placeholder="标题" required>
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input name="author" type="text" class="form-control" placeholder="作者" required>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">景区</span>
-                                <select name="scenicId" class="form-control">
-                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
-                                </select>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <textarea name="content" class="form-control" rows="3" placeholder="请输入公告内容 ..."></textarea>
-                            </div>
-                            <br/>
-                        </form>
-                        <div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-font"></i></span>
+                            <input name="title" ng-model="newEmergency['title']" type="text" class="form-control" placeholder="标题" required>
                         </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input name="author" ng-model="newEmergency['author']" type="text" class="form-control" placeholder="作者" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">景区</span>
+                            <select name="scenicId" class="form-control" ng-model="newEmergency['scenicId']">
+                                <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <textarea name="content" ng-model="newEmergency['content']" class="form-control" rows="3" placeholder="请输入公告内容 ..."></textarea>
+                        </div>
+                        <br/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -142,7 +140,7 @@
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">时间</span>
-                            <span class="form-control">{{theEmergency['createAt']}}</span>
+                            <span class="form-control">{{theEmergency['createAt'] | date : 'yyyy-MM-dd'}}</span>
                         </div>
                         <br/>
                         <div class="input-group">
@@ -169,37 +167,33 @@
                         <h3 class="box-title">更新景区信息</h3>
                     </div>
                     <div class="box-body">
-
-                        <form enctype="multipart/form-data" name="updateForm">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-font"></i></span>
-                                <input name="title" ng-model="updateEmergency['title']" type="text" class="form-control" placeholder="标题" required>
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input name="author" ng-model="updateEmergency['author']" type="text" class="form-control" placeholder="作者" required>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">景区</span>
-                                <select name="scenicId" class="form-control" ng-value="updateEmergency['scenicId']">
-                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
-                                </select>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <textarea name="content" ng-model="updateEmergency['content']" class="form-control" rows="3" placeholder="请输入公告内容 ..."></textarea>
-                            </div>
-                            <br/>
-                        </form>
-                        <div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-font"></i></span>
+                            <input name="title" ng-model="updateEmergency['title']" type="text" class="form-control" placeholder="标题" required>
                         </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input name="author" ng-model="updateEmergency['author']" type="text" class="form-control" placeholder="作者" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">景区</span>
+                            <select name="scenicId" class="form-control" ng-value="updateEmergency['scenicId']">
+                                <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <textarea name="content" ng-model="updateEmergency['content']" class="form-control" rows="3" placeholder="请输入公告内容 ..."></textarea>
+                        </div>
+                        <br/>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="update(updateArticle['id'])">更新</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="update(updateEmergency['id'])">更新</button>
             </div>
         </div>
     </div>

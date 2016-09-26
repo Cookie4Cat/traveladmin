@@ -85,6 +85,7 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl, Pa
     }
 });
 
+//投诉处理控制器
 app.controller('comProcessCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
 
     init();
@@ -234,7 +235,7 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "继续删除",
-            cancelButtonText:"取消",
+            cancelButtonText: "取消",
             closeOnConfirm: false
         }, function () {
             $http.post(baseUrl + 'scenic/admin/scenic/' + id + '/delete', null)
@@ -298,7 +299,7 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
 });
 
 //游记控制器
-app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+app.controller('articleCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
     init();
 
     //初始化
@@ -347,7 +348,7 @@ app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseIm
             swal("操作失败!", "出现错误!", "error");
         });
     };
-    
+
     //查看待更新的游记
     $scope.viewUpdateArticle = function (id) {
         $http.get(baseUrl + 'article/admin/articles/' + id)
@@ -357,7 +358,7 @@ app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseIm
             alert('数据加载失败');
         })
     };
-    
+
     //更新游记
     $scope.update = function (id) {
         var formData = new FormData(document.forms.namedItem("updateForm"));
@@ -385,7 +386,7 @@ app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseIm
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "继续删除",
-            cancelButtonText:"取消",
+            cancelButtonText: "取消",
             closeOnConfirm: false
         }, function () {
             $http.post(baseUrl + 'article/admin/articles/' + id + '/delete', null)
@@ -485,7 +486,7 @@ app.controller('hotelCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImg
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "继续删除",
-            cancelButtonText:"取消",
+            cancelButtonText: "取消",
             closeOnConfirm: false
         }, function () {
             $http.post(baseUrl + 'hotel/admin/hotels/' + id + '/delete', null)
@@ -549,7 +550,7 @@ app.controller('hotelCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImg
 });
 
 //演出信息控制器
-app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+app.controller('performanceCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
     init();
 
     //初始化
@@ -571,7 +572,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
             alert('数据加载出错');
         })
     }
-    
+
     //获取演出信息
     $scope.getPerformances = function (page) {
         $http.get(baseUrl + 'ent/admin/performances' + Pager.pageParams(page, pageSize))
@@ -633,7 +634,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "继续删除",
-            cancelButtonText:"取消",
+            cancelButtonText: "取消",
             closeOnConfirm: false
         }, function () {
             $http.post(baseUrl + 'ent/admin/performances/' + id + '/delete', null)
@@ -763,7 +764,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
     };
 
     //获取待更新的餐饮信息
-    $scope.viewUpdateCanteen= function (id) {
+    $scope.viewUpdateCanteen = function (id) {
         $http.get(baseUrl + 'cant/admin/canteens/' + id)
             .success(function (resp) {
                 $scope.updateCanteen = resp;
@@ -781,7 +782,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "继续删除",
-            cancelButtonText:"取消",
+            cancelButtonText: "取消",
             closeOnConfirm: false
         }, function () {
             $http.post(baseUrl + 'cant/admin/canteens/' + id + '/delete', null)
@@ -845,6 +846,110 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
 });
 
 //应急信息控制器
-app.controller('emergencyCurd',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
-    
+app.controller('emergencyCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+    init();
+
+    //初始化
+    function init() {
+        $scope.baseImgUrl = baseImgUrl;
+        getScenicInfo();
+    }
+
+    //获取景区LOV
+    function getScenicInfo() {
+        $http.get(baseUrl + 'scenic/admin/scenic' + Pager.pageParams(1, 10))
+            .success(function (resp) {
+                $scope.scenicLOV = {};
+                var scenicList = resp['scenicEntities'];
+                for (i in scenicList) {
+                    $scope.scenicLOV[scenicList[i]['sid']] = scenicList[i]['scenicName'];
+                }
+            }).error(function (resp) {
+            alert('数据加载出错');
+        })
+    }
+
+    //获取文章信息
+    $scope.getEmergencies = function (page) {
+        $http.get(baseUrl + 'emgy/admin/emergencies' + Pager.pageParams(page, pageSize))
+            .success(function (resp) {
+                $scope.emergencies = resp['emergencyEntities'];
+                //获取分页器
+                $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    //获取第一页
+    $scope.getEmergencies(1);
+
+    //查看某个游记的信息
+    $scope.viewEmergency = function (id) {
+        $http.get(baseUrl + 'emgy/admin/emergencies/' + id)
+            .success(function (resp) {
+                $scope.theEmergency = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //增加游记
+    $scope.addEmergency = function () {
+        $http.post(baseUrl + 'emgy/admin/emergencies', $scope['newEmergency'])
+            .success(function (data) {
+                //上传成功
+                swal("操作成功!", "完成添加!", "success");
+                $scope.getEmergencies($scope.pagination.current);
+                $scope['newEmergency'] = {};
+            }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+    };
+
+    //查看待更新的游记
+    $scope.viewUpdateEmergency = function (id) {
+        $http.get(baseUrl + 'emgy/admin/emergencies/' + id)
+            .success(function (resp) {
+                $scope.updateEmergency = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    //更新游记
+    $scope.update = function (id) {
+        $http.post(baseUrl + 'emgy/admin/emergencies/' + id, $scope['updateEmergency'])
+            .success(function (data) {
+                //上传成功
+                $scope.getEmergencies($scope.pagination.current);
+                $scope['updateEmergency'] = {};
+                swal("操作成功!", "完成添加!", "success");
+            }).error(function (data, status) {
+            //上传失败
+            swal("操作失败!", "出现错误!", "error");
+        });
+    };
+
+    //删除游记
+    $scope.deleteEmergency = function (id) {
+        swal({
+            title: "您确定删除此项记录?",
+            text: "此项记录将被永久删除",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "继续删除",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            $http.post(baseUrl + 'emgy/admin/emergencies/' + id + '/delete', null)
+                .success(function (resp) {
+                    swal("操作成功!", "成功删除!", "success");
+                    $scope.getEmergencies($scope.pagination.current);
+                }).error(function (resp) {
+                swal("操作失败!", "出现错误!", "error");
+            })
+        });
+    };
 });
