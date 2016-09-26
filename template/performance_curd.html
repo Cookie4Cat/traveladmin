@@ -40,7 +40,7 @@
                         <tr ng-repeat="row in performances">
                             <td>{{$index + 1}}</td>
                             <td>{{row['name']}}</td>
-                            <td>暂无</td>
+                            <td>{{row['timeFrame']}}</td>
                             <td>{{row['scenicId']}}</td>
                             <td>{{row['content']}}</td>
                             <td>
@@ -85,6 +85,11 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
                                 <input name="name" type="text" class="form-control" placeholder="名称" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                                <input name="timeFrame" type="text" class="form-control" placeholder="时间" required>
                             </div>
                             <br>
                             <div class="input-group">
@@ -139,6 +144,11 @@
                         </div>
                         <br/>
                         <div class="input-group">
+                            <span class="input-group-addon">时间</span>
+                            <span class="form-control">{{thePerformance['timeFrame']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
                             <span class="input-group-addon">内容</span>
                             <span class="form-control">{{thePerformance['content']}}</span>
                         </div>
@@ -186,6 +196,11 @@
                                 </select>
                             </div>
                             <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon">时间</span>
+                                <input name="name" type="text" class="form-control" ng-model="updatePerformance['timeFrame']" required>
+                            </div>
+                            <br>
                             <div class="form-group">
                                 <textarea name="content" ng-model="updatePerformance['content']" class="form-control" rows="3" placeholder="请输入演出内容 ..."></textarea>
                             </div>
