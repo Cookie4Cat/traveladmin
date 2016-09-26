@@ -277,6 +277,7 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
         }).success(function (data) {
             //上传成功
             swal("操作成功!", "完成更新!", "success");
+            document.getElementsByName("updateForm")[0].reset();
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
@@ -368,7 +369,7 @@ app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseIm
         }).success(function (data) {
             //上传成功
             swal("操作成功!", "完成添加!", "success");
-            $scope.getArticles($scope.pagination.current);
+            document.getElementsByName("updateForm")[0].reset();
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
@@ -527,6 +528,7 @@ app.controller('hotelCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImg
         }).success(function (data) {
             //上传成功
             swal("操作成功!", "完成更新!", "success");
+            document.getElementsByName("updateForm")[0].reset();
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
@@ -674,6 +676,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
         }).success(function (data) {
             //上传成功
             swal("操作成功!", "完成更新!", "success");
+            document.getElementsByName("updateForm")[0].reset();
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
@@ -719,9 +722,9 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
 
     //获取餐饮信息
     $scope.getCanteens = function (page) {
-        $http.get(baseUrl + 'canteen/admin/canteens' + Pager.pageParams(page, pageSize))
+        $http.get(baseUrl + 'cant/admin/canteens' + Pager.pageParams(page, pageSize))
             .success(function (resp) {
-                $scope.canteens = resp['hotels'];
+                $scope.canteens = resp['canteens'];
                 //获取分页器
                 $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
             }).error(function (resp) {
@@ -733,7 +736,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
 
     //查看某个餐饮信息
     $scope.viewCanteen = function (id) {
-        $http.get(baseUrl + 'canteen/admin/canteens/' + id)
+        $http.get(baseUrl + 'cant/admin/canteens/' + id)
             .success(function (resp) {
                 $scope.theCanteen = resp;
             }).error(function (resp) {
@@ -746,7 +749,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
         var formData = new FormData(document.forms.namedItem("addForm"));
         $http({
             method: 'POST',
-            url: baseUrl + 'canteen/admin/canteens',
+            url: baseUrl + 'cant/admin/canteens',
             data: formData,
             headers: {'Content-Type': undefined}
         }).success(function (data) {
@@ -761,10 +764,9 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
 
     //获取待更新的餐饮信息
     $scope.viewUpdateCanteen= function (id) {
-        $http.get(baseUrl + 'canteen/admin/canteens/' + id)
+        $http.get(baseUrl + 'cant/admin/canteens/' + id)
             .success(function (resp) {
                 $scope.updateCanteen = resp;
-                console.log(resp);
             }).error(function (resp) {
             alert('数据加载失败');
         })
@@ -782,7 +784,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
             cancelButtonText:"取消",
             closeOnConfirm: false
         }, function () {
-            $http.post(baseUrl + 'canteen/admin/canteens/' + id + '/delete', null)
+            $http.post(baseUrl + 'cant/admin/canteens/' + id + '/delete', null)
                 .success(function (resp) {
                     swal("操作成功!", "成功删除!", "success");
                     $scope.getCanteens($scope.pagination.current);
@@ -816,12 +818,13 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
         var formData = new FormData(document.forms.namedItem("updateForm"));
         $http({
             method: 'POST',
-            url: baseUrl + 'canteen/admin/canteens/' + $scope.updateCanteen['id'],
+            url: baseUrl + 'cant/admin/canteens/' + $scope.updateCanteen['id'],
             data: formData,
             headers: {'Content-Type': undefined}
         }).success(function (data) {
             //上传成功
             swal("操作成功!", "完成更新!", "success");
+            document.getElementsByName("updateForm")[0].reset();
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
@@ -832,7 +835,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
 
     //删除一个图片
     function removeImg(id) {
-        $http.post(baseUrl + 'scenic/admin/image/' + id + '/delete', null)
+        $http.post(baseUrl + 'images/' + id + '/delete', null)
             .success(function (resp) {
                 //success
             }).error(function (resp) {

@@ -38,12 +38,14 @@
                             <th>所属景区</th>
                             <th>操作</th>
                         </tr>
-                        <tr ng-repeat="row in hotels">
+                        <tr ng-repeat="row in canteens">
                             <td>{{$index + 1}}</td>
                             <td>{{row['name']}}</td>
-                            <td>{{scenicLOV[row['scenicId']]}}</td>
                             <td>{{row['type']}}</td>
                             <td>{{row['price']}}</td>
+                            <td>经典口味</td>
+                            <td>{{scenicLOV[row['scenicId']]}}</td>
+
                             <td>
                                 <a ng-click="viewCanteen(row['id'])" class="btn btn-success btn-sm" data-toggle="modal"
                                    data-target="#viewModal">查看</a>
@@ -78,7 +80,7 @@
             <div class="modal-body">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">添加酒店信息</h3>
+                        <h3 class="box-title">添加餐厅信息</h3>
                     </div>
                     <div class="box-body">
 
@@ -103,16 +105,6 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
                                 <input name="price" type="text" class="form-control" placeholder="价格" required>
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
-                                <input name="totalRoom" type="number" class="form-control" placeholder="房间总数" required>
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input name="bookedRoom" type="number" class="form-control" placeholder="被预订数量" required>
                             </div>
                             <br>
                             <div class="input-group" style="margin: 10px 0;">
@@ -142,44 +134,33 @@
             <div class="modal-body">
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">酒店信息</h3>
+                        <h3 class="box-title">餐厅信息</h3>
                     </div>
                     <div class="box-body">
                         <div class="input-group">
                             <span class="input-group-addon">名称</span>
-                            <span class="form-control">{{theHotel['name']}}</span>
+                            <span class="form-control">{{theCanteen['name']}}</span>
                         </div>
                         <br>
                         <div class="input-group">
                             <span class="input-group-addon">景区</span>
-                            <span class="form-control">{{scenicLOV[theHotel['scenicId']]}}</span>
+                            <span class="form-control">{{scenicLOV[theCanteen['scenicId']]}}</span>
                         </div>
                         <br/>
                         <div class="input-group">
                             <span class="input-group-addon">类型</span>
-                            <span class="form-control">{{theHotel['type']}}</span>
+                            <span class="form-control">{{theCanteen['type']}}</span>
                         </div>
                         <br/>
                         <div class="input-group">
                             <span class="input-group-addon">价格</span>
-                            <span class="form-control">{{theHotel['price']}}</span>
+                            <span class="form-control">{{theCanteen['price']}}</span>
                         </div>
-                        <br/>
-                        <div class="input-group">
-                            <span class="input-group-addon">房间总数</span>
-                            <span class="form-control">{{theHotel['totalRoom']}}</span>
-                        </div>
-                        <br/>
-                        <div class="input-group">
-                            <span class="input-group-addon">被预定数量</span>
-                            <span class="form-control">{{theHotel['bookedRoom']}}</span>
-                        </div>
-                        <br/>
                         <br/>
                         <div style="color: #777">酒店图片</div>
                         <br/>
                         <div class="row" id="img">
-                            <div class="col-md-3" ng-repeat="img in theHotel['imgs']">
+                            <div class="col-md-3" ng-repeat="img in theCanteen['imgs']">
                                 <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
                             </div>
                         </div>
@@ -202,19 +183,19 @@
             <div class="modal-body">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">更新酒店信息</h3>
+                        <h3 class="box-title">更新餐厅信息</h3>
                     </div>
                     <div class="box-body">
 
                         <form enctype="multipart/form-data" name="updateForm">
                             <div class="input-group">
                                 <span class="input-group-addon">名称</span>
-                                <input name="name" type="text" class="form-control" ng-model="updateHotel['name']" required>
+                                <input name="name" type="text" class="form-control" ng-model="updateCanteen['name']" required>
                             </div>
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon">景区</span>
-                                <select name="scenicId" class="form-control" ng-value="updateHotel['scenicId']">
+                                <select name="scenicId" class="form-control" ng-value="updateCanteen['scenicId']">
                                     <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
                                 </select>
                             </div>
@@ -222,27 +203,17 @@
                             <br/>
                             <div class="input-group">
                                 <span class="input-group-addon">类型</span>
-                                <input name="type" type="text" class="form-control" ng-model="updateHotel['type']" required>
+                                <input name="type" type="text" class="form-control" ng-model="updateCanteen['type']" required>
                             </div>
                             <br/>
                             <div class="input-group">
                                 <span class="input-group-addon">价格</span>
-                                <input name="price" type="text" class="form-control" ng-model="updateHotel['price']" required>
+                                <input name="price" type="text" class="form-control" ng-model="updateCanteen['price']" required>
                             </div>
                             <br>
-                            <div class="input-group">
-                                <span class="input-group-addon">房间总数</span>
-                                <input name="totalRoom" type="number" class="form-control" ng-model="updateHotel['totalRoom']" required>
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon">被预订数量</span>
-                                <input name="bookedRoom" type="number" class="form-control" ng-model="updateHotel['bookedRoom']" required>
-                            </div>
-                            <br>
-                            <div style="color: #777" ng-show="updateHotel['imgs'].length > 0">酒店图片</div>
+                            <div style="color: #777" ng-show="updateCanteen['imgs'].length > 0">餐厅图片</div>
                             <div class="row">
-                                <div class="col-md-3" ng-repeat="img in updateHotel['imgs']" ng-if="img.url">
+                                <div class="col-md-3" ng-repeat="img in updateCanteen['imgs']" ng-if="img.url">
                                     <span ng-click="addToRemovePool(img.id)" class="pull-right"><i style="color:red" class="glyphicon glyphicon-remove"></i></span>
                                     <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
                                 </div>
