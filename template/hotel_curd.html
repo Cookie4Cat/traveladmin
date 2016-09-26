@@ -83,35 +83,35 @@
 
                         <form enctype="multipart/form-data" name="addForm">
                             <div class="input-group">
-                                <span class="input-group-addon">景区</span>
-                                <select name="scenicId" class="form-control">
-                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
-                                </select>
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-blackboard"></i></span>
                                 <input name="name" type="text" class="form-control" placeholder="名称" required>
                             </div>
                             <br>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-star-empty"></i></span>
-                                <input name="type" type="text" class="form-control" placeholder="类型" required>
+                                <span class="input-group-addon"><i
+                                        class="glyphicon glyphicon-tree-deciduous"></i></span>
+                                <input name="scenicId" type="text" class="form-control" placeholder="景区" required>
                             </div>
                             <br/>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <input name="type" type="text" class="form-control" placeholder="类型" required>
+                            </div>
+                            <br/>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
                                 <input name="price" type="text" class="form-control" placeholder="价格" required>
                             </div>
                             <br>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-ok-sign"></i></span>
                                 <input name="totalRoom" type="number" class="form-control" placeholder="房间总数" required>
                             </div>
                             <br>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
-                                <input name="bookedRoom" type="number" class="form-control" placeholder="被预订数量" required>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-remove-sign"></i></span>
+                                <input name="bookedRoom" type="number" class="form-control" placeholder="被预订数量"
+                                       required>
                             </div>
                             <br>
                             <div class="input-group" style="margin: 10px 0;">
@@ -208,7 +208,8 @@
                         <form enctype="multipart/form-data" name="updateForm">
                             <div class="input-group">
                                 <span class="input-group-addon">名称</span>
-                                <input name="name" type="text" class="form-control" ng-model="updateHotel['name']" required>
+                                <input name="name" type="text" class="form-control" ng-model="updateHotel['name']"
+                                       required>
                             </div>
                             <br>
                             <div class="input-group">
@@ -221,28 +222,33 @@
                             <br/>
                             <div class="input-group">
                                 <span class="input-group-addon">类型</span>
-                                <input name="type" type="text" class="form-control" ng-model="updateHotel['type']" required>
+                                <input name="type" type="text" class="form-control" ng-model="updateHotel['type']"
+                                       required>
                             </div>
                             <br/>
                             <div class="input-group">
                                 <span class="input-group-addon">价格</span>
-                                <input name="price" type="text" class="form-control" ng-model="updateHotel['price']" required>
+                                <input name="price" type="text" class="form-control" ng-model="updateHotel['price']"
+                                       required>
                             </div>
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon">房间总数</span>
-                                <input name="totalRoom" type="number" class="form-control" ng-model="updateHotel['totalRoom']" required>
+                                <input name="totalRoom" type="number" class="form-control"
+                                       ng-model="updateHotel['totalRoom']" required>
                             </div>
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon">被预订数量</span>
-                                <input name="bookedRoom" type="number" class="form-control" ng-model="updateHotel['bookedRoom']" required>
+                                <input name="bookedRoom" type="number" class="form-control"
+                                       ng-model="updateHotel['bookedRoom']" required>
                             </div>
                             <br>
                             <div style="color: #777" ng-show="updateHotel['imgs'].length > 0">酒店图片</div>
                             <div class="row">
                                 <div class="col-md-3" ng-repeat="img in updateHotel['imgs']" ng-if="img.url">
-                                    <span ng-click="addToRemovePool(img.id)" class="pull-right"><i style="color:red" class="glyphicon glyphicon-remove"></i></span>
+                                    <span ng-click="addToRemovePool(img.id)" class="pull-right"><i style="color:red"
+                                                                                                   class="glyphicon glyphicon-remove"></i></span>
                                     <img ng-src="{{baseImgUrl + img.url}}" alt="" width="100%"/>
                                 </div>
                             </div>

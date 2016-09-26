@@ -341,7 +341,7 @@ app.controller('articleCurdCtrl',function ($scope, $http, Pager, baseUrl, baseIm
         }).success(function (data) {
             //上传成功
             swal("操作成功!", "完成添加!", "success");
-            $scope.getScenic($scope.pagination.current);
+            $scope.getArticles($scope.pagination.current);
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
