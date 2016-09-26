@@ -840,3 +840,8 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
         })
     }
 });
+
+//应急信息控制器
+app.controller('emergencyCurd',function ($scope, $http, Pager, baseUrl, baseImgUrl, pageSize) {
+    
+});

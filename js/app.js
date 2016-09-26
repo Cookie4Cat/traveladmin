@@ -33,6 +33,10 @@
             templateUrl: "template/canteen_curd.html",
             controller: "canteenCurdCtrl"
         })
+        .when('/emergency/curd',{
+            templateUrl: "template/emergency_curd.html",
+            controller: "emergencyCurdCtrl"
+        })
         .otherwise({ redirectTo: "/user-index" });
     }]);
     
