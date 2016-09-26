@@ -80,7 +80,6 @@
                         <h3 class="box-title">添加酒店信息</h3>
                     </div>
                     <div class="box-body">
-
                         <form enctype="multipart/form-data" name="addForm">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-blackboard"></i></span>
@@ -88,9 +87,10 @@
                             </div>
                             <br>
                             <div class="input-group">
-                                <span class="input-group-addon"><i
-                                        class="glyphicon glyphicon-tree-deciduous"></i></span>
-                                <input name="scenicId" type="text" class="form-control" placeholder="景区" required>
+                                <span class="input-group-addon">景区</span>
+                                <select name="scenicId" class="form-control" ng-value="updateHotel['scenicId']">
+                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
+                                </select>
                             </div>
                             <br/>
                             <div class="input-group">

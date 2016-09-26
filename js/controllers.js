@@ -287,8 +287,7 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
 
     //删除一个图片
     function removeImg(id) {
-        console.log(id + '----------');
-        $http.post(baseUrl + 'scenic/admin/image/' + id + '/delete', null)
+        $http.post(baseUrl + 'images/' + id + '/delete', null)
             .success(function (resp) {
                 //success
             }).error(function (resp) {
@@ -538,7 +537,7 @@ app.controller('hotelCurdCtrl', function ($scope, $http, Pager, baseUrl, baseImg
 
     //删除一个图片
     function removeImg(id) {
-        $http.post(baseUrl + 'scenic/admin/image/' + id + '/delete', null)
+        $http.post(baseUrl + 'images/' + id + '/delete', null)
             .success(function (resp) {
                 //success
             }).error(function (resp) {
@@ -554,13 +553,28 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
     //初始化
     function init() {
         $scope.baseImgUrl = baseImgUrl;
+        getScenicInfo();
     }
 
+    //获取景区LOV
+    function getScenicInfo() {
+        $http.get(baseUrl + 'scenic/admin/scenic' + Pager.pageParams(1, 10))
+            .success(function (resp) {
+                $scope.scenicLOV = {};
+                var scenicList = resp['scenicEntities'];
+                for (i in scenicList) {
+                    $scope.scenicLOV[scenicList[i]['sid']] = scenicList[i]['scenicName'];
+                }
+            }).error(function (resp) {
+            alert('数据加载出错');
+        })
+    }
+    
     //获取演出信息
     $scope.getPerformances = function (page) {
-        $http.get(baseUrl + 'performance/admin/performances' + Pager.pageParams(page, pageSize))
+        $http.get(baseUrl + 'ent/admin/performances' + Pager.pageParams(page, pageSize))
             .success(function (resp) {
-                $scope.performances = resp['performances'];
+                $scope.performances = resp['performs'];
                 //获取分页器
                 $scope.pagination = Pager.getPagination(page, pageSize, resp['count']);
             }).error(function (resp) {
@@ -572,7 +586,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
 
     //查看某个演出的信息
     $scope.viewPerformance = function (id) {
-        $http.get(baseUrl + 'performance/admin/performances/' + id)
+        $http.get(baseUrl + 'ent/admin/performances/' + id)
             .success(function (resp) {
                 $scope.thePerformance = resp;
             }).error(function (resp) {
@@ -585,7 +599,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
         var formData = new FormData(document.forms.namedItem("addForm"));
         $http({
             method: 'POST',
-            url: baseUrl + 'performance/admin/performances',
+            url: baseUrl + 'ent/admin/performances',
             data: formData,
             headers: {'Content-Type': undefined}
         }).success(function (data) {
@@ -600,7 +614,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
 
     //获取待更新的演出信息
     $scope.viewUpdatePerformance = function (id) {
-        $http.get(baseUrl + 'performance/admin/performances/' + id)
+        $http.get(baseUrl + 'ent/admin/performances/' + id)
             .success(function (resp) {
                 $scope.updatePerformance = resp;
             }).error(function (resp) {
@@ -620,7 +634,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
             cancelButtonText:"取消",
             closeOnConfirm: false
         }, function () {
-            $http.post(baseUrl + 'performance/admin/performances/' + id + '/delete', null)
+            $http.post(baseUrl + 'ent/admin/performances/' + id + '/delete', null)
                 .success(function (resp) {
                     swal("操作成功!", "成功删除!", "success");
                     $scope.getPerformances($scope.pagination.current);
@@ -637,9 +651,9 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
     $scope.addToRemovePool = function (id) {
         var emptyImg = {id: 0};
         $scope.removeImgPool.push(id);
-        for (i in $scope.updatePerformance['imgs']) {
-            if ($scope.updatePerformance['imgs'][i].id == id) {
-                $scope.updatePerformance['imgs'][i] = emptyImg;
+        for (i in $scope.updatePerformance['images']) {
+            if ($scope.updatePerformance['images'][i].id == id) {
+                $scope.updatePerformance['images'][i] = emptyImg;
             }
         }
     };
@@ -654,7 +668,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
         var formData = new FormData(document.forms.namedItem("updateForm"));
         $http({
             method: 'POST',
-            url: baseUrl + 'performance/admin/performances/' + $scope.updatePerformance['id'],
+            url: baseUrl + 'ent/admin/performances/' + $scope.updatePerformance['id'],
             data: formData,
             headers: {'Content-Type': undefined}
         }).success(function (data) {
@@ -670,7 +684,7 @@ app.controller('performanceCurdCtrl',function ($scope, $http, Pager, baseUrl, ba
 
     //删除一个图片
     function removeImg(id) {
-        $http.post(baseUrl + 'scenic/admin/image/' + id + '/delete', null)
+        $http.post(baseUrl + 'images/' + id + '/delete', null)
             .success(function (resp) {
                 //success
             }).error(function (resp) {
