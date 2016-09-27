@@ -88,7 +88,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon">景区</span>
                                 <select name="scenicId" class="form-control">
-                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id">{{name}}</option>
+                                    <option ng-repeat="(id,name) in scenicLOV" ng-value="id"><td>{{scenicLOV[row['scenicId']]}}</td></option>
                                 </select>
                             </div>
                             <br>
@@ -223,7 +223,7 @@
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon">经典口味</span>
-                                <input name="price" type="text" class="form-control" ng-model="updateCanteen['specialty']" required>
+                                <input name="specialty" type="text" class="form-control" ng-model="updateCanteen['specialty']" required>
                             </div>
                             <br>
                             <div style="color: #777" ng-show="updateCanteen['imgs'].length > 0">餐厅图片</div>

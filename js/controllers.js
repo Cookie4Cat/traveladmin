@@ -828,6 +828,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
             //上传成功
             swal("操作成功!", "完成更新!", "success");
             document.getElementsByName("updateForm")[0].reset();
+            $scope.getCanteens($scope.pagination.current);
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
