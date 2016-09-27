@@ -279,6 +279,7 @@ app.controller('scenicInfoCtrl', function ($scope, $http, Pager, baseUrl, baseIm
             //上传成功
             swal("操作成功!", "完成更新!", "success");
             document.getElementsByName("updateForm")[0].reset();
+            $scope.getScenic($scope.pagination.current);
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
