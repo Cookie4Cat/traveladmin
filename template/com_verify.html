@@ -47,7 +47,8 @@
                                     </table>
                                     <div ng-if="handlingComList.length == 0" style="text-align: center">无数据显示</div>
                                     <!--分页-->
-                                    <div class="box-footer clearfix" ng-if="pagination">
+                                    <!--分页-->
+                                    <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
                                         <ul class="pagination pagination-sm no-margin pull-right">
                                             <li><a ng-click="getHandlingComplaints(pagination.last)">&laquo;</a></li>
                                             <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
@@ -92,6 +93,7 @@
                                             <td>{{row['create_at']|date : 'yyyy-MM-dd'}}</td>
                                             <td>{{typeMap[row['type']]}}</td>
                                             <td><span class="label label-success">{{row.status}}</span></td>
+                                            <td>5</td>
                                             <td>
                                                 <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal">查看</a>
                                             </td>
@@ -101,13 +103,13 @@
                                     </table>
                                     <div ng-if="handlingComList.length == 0" style="text-align: center">无数据显示</div>
                                     <!--分页-->
-                                    <div class="box-footer clearfix">
+                                    <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
                                         <ul class="pagination pagination-sm no-margin pull-right">
-                                            <li><a href="#">&laquo;</a></li>
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">&raquo;</a></li>
+                                            <li><a ng-click="getHandlingComplaints(pagination.last)">&laquo;</a></li>
+                                            <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
+                                                <a ng-click="getHandlingComplaints(p)">{{p}}</a>
+                                            </li>
+                                            <li><a ng-click="getHandlingComplaints(pagination.next)">&raquo;</a></li>
                                         </ul>
                                     </div>
 

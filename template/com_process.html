@@ -49,13 +49,13 @@
                                     </table>
                                     <div ng-if="handlingComList.length == 0" style="text-align: center">无数据显示</div>
                                     <!--分页-->
-                                    <div class="box-footer clearfix" ng-if="pagination">
+                                    <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
                                         <ul class="pagination pagination-sm no-margin pull-right">
-                                            <li><a ng-click="getHandlingComplaints(pagination.last)">&laquo;</a></li>
+                                            <li><a ng-click="getCanteens(pagination.last)">&laquo;</a></li>
                                             <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
-                                                <a ng-click="getHandlingComplaints(p)">{{p}}</a>
+                                                <a ng-click="getCanteens(p)">{{p}}</a>
                                             </li>
-                                            <li><a ng-click="getHandlingComplaints(pagination.next)">&raquo;</a></li>
+                                            <li><a ng-click="getCanteens(pagination.next)">&raquo;</a></li>
                                         </ul>
                                     </div>
                                 </div>
