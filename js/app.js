@@ -1,8 +1,8 @@
  var app = angular.module('adminApp', ['ngRoute'])
     //路由配置
     .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when("/user-index", {
-        templateUrl: "template/test.html",
+    $routeProvider.when("/index", {
+        templateUrl: "template/home.html",
         controller: "userIndexCtrl"
         })
         .when('/com/verify', {
@@ -37,6 +37,6 @@
             templateUrl: "template/emergency_curd.html",
             controller: "emergencyCurdCtrl"
         })
-        .otherwise({ redirectTo: "/user-index" });
+        .otherwise({ redirectTo: "/index" });
     }]);
     
