@@ -679,6 +679,7 @@ app.controller('performanceCurdCtrl', function ($scope, $http, Pager, baseUrl, b
             //上传成功
             swal("操作成功!", "完成更新!", "success");
             document.getElementsByName("updateForm")[0].reset();
+            $scope.getPerformances($scope.pagination.current);
         }).error(function (data, status) {
             //上传失败
             swal("操作失败!", "出现错误!", "error");
@@ -865,6 +866,7 @@ app.controller('emergencyCurdCtrl', function ($scope, $http, Pager, baseUrl, bas
                 for (i in scenicList) {
                     $scope.scenicLOV[scenicList[i]['sid']] = scenicList[i]['scenicName'];
                 }
+                console.log($scope.scenicLOV);
             }).error(function (resp) {
             alert('数据加载出错');
         })
