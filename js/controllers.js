@@ -962,3 +962,8 @@ app.controller('emergencyCurdCtrl', function ($scope, $http, Pager, baseUrl, bas
 app.controller('menuCurdCtrl',function () {
     
 });
+
+//角色控制器
+app.controller('roleCurdCtrl',function () {
+
+});
