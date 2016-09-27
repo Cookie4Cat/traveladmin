@@ -118,6 +118,16 @@
                             </div>
                             <br>
                             <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                <input name="btnText" type="text" class="form-control" placeholder="名号" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                                <input name="shortDesc" type="text" class="form-control" placeholder="口号" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-align-justify"></i></span>
                                 <input name="scenicDescription" type="text" class="form-control" placeholder="描述"
                                        required>
@@ -185,6 +195,16 @@
                         <div class="input-group">
                             <span class="input-group-addon">面积</span>
                             <span class="form-control">{{theScenic['scenicArea']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">名号</span>
+                            <span class="form-control">{{theScenic['btnText']}}</span>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon">口号</span>
+                            <span class="form-control">{{theScenic['shortDesc']}}</span>
                         </div>
                         <br/>
                         <div class="input-group">
@@ -263,6 +283,18 @@
                                 <span class="input-group-addon">面积</span>
                                 <input type="text" class="form-control" placeholder="面积"
                                        name="scenicArea" ng-model="updateScenic['scenicArea']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">名号</span>
+                                <input type="text" class="form-control" placeholder="名号"
+                                       name="btnText" ng-model="updateScenic['btnText']" required>
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon">口号</span>
+                                <input type="text" class="form-control" placeholder="口号"
+                                       name="shortDesc" ng-model="updateScenic['shortDesc']" required>
                             </div>
                             <br>
                             <div class="input-group">
