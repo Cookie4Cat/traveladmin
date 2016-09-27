@@ -37,6 +37,10 @@
             templateUrl: "template/emergency_curd.html",
             controller: "emergencyCurdCtrl"
         })
+        .when('/menu/curd',{
+            templateUrl: "template/menu_curd.html",
+            controller: "menuCurdCtrl"
+        })
         .otherwise({ redirectTo: "/index" });
     }]);
     

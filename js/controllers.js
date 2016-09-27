@@ -957,3 +957,8 @@ app.controller('emergencyCurdCtrl', function ($scope, $http, Pager, baseUrl, bas
         });
     };
 });
+
+//菜单控制器
+app.controller('menuCurdCtrl',function () {
+    
+});
