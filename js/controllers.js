@@ -69,13 +69,14 @@ app.controller('comVerifyCtrl', function ($scope, $http, baseUrl, baseImgUrl, Pa
         if (isPass) {
             comStatus.status = '处理中';
         } else {
-            comStatus.status = '审核被驳';
+            comStatus.status = '投诉被驳';
         }
         $http.post(baseUrl + 'com/admin/complaints/' + $scope.theComplaint['id'], comStatus)
             .success(function (resp) {
                 if (resp['status'] == 'success') {
                     swal("操作成功!", "完成审核!", "success");
-                    getHandlingComplaints(1);
+                    $scope.getHandlingComplaints($scope.pagination.current);
+                    console.log('update');
                 } else {
                     swal("操作失败!", "系统发生错误!", "error");
                 }
