@@ -44,11 +44,11 @@
                     <!--分页-->
                     <div class="box-footer clearfix" ng-if="pagination" ng-show="pagination.show">
                         <ul class="pagination pagination-sm no-margin pull-right">
-                            <li><a ng-click="getHotels(pagination.last)">&laquo;</a></li>
+                            <li><a ng-click="getUsers(pagination.last)">&laquo;</a></li>
                             <li ng-repeat="p in pagination.pages" ng-class="{'active':p==pagination.current}">
-                                <a ng-click="getHotels(p)">{{p}}</a>
+                                <a ng-click="getUsers(p)">{{p}}</a>
                             </li>
-                            <li><a ng-click="getHotels(pagination.next)">&raquo;</a></li>
+                            <li><a ng-click="getUsers(pagination.next)">&raquo;</a></li>
                         </ul>
                     </div>
 
@@ -112,7 +112,7 @@
                         <br>
                         <div>
 
-                            <div class="pull-left">
+                            <div class="pull-left" ng-show="showLeftLovs">
                                 <ul>
                                     <li><strong>所有角色</strong></li>
                                     <li ng-repeat="r in rolesLov">

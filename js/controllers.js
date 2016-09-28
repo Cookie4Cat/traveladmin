@@ -965,7 +965,81 @@ app.controller('menuCurdCtrl',function () {
 });
 
 //角色控制器
-app.controller('roleCurdCtrl',function () {
+app.controller('roleCurdCtrl',function ($scope, $http, Pager, baseUrl,pageSize) {
+
+    $scope.getRoles = function (page) {
+        $http.get(baseUrl + 'user/super-admin/roles' + Pager.pageParams(page, pageSize))
+            .success(function (resp) {
+                $scope.roles = resp['roles'];
+                $scope.pagination = Pager.getPagination(page,pageSize,resp['count']);
+            }).error(function (resp) {
+            alert('数据加载错误');
+        })
+    };
+
+    $scope.getRoles(1);
+
+    $scope.getMenusLOV = function () {
+        $http.get(baseUrl + 'lovs/menu')
+            .success(function (resp) {
+                $scope.menusLov = resp;
+            }).error(function (resp) {
+            alert('加载失败');
+        })
+    };
+
+    $scope.getMenusLOV();
+
+    $scope.viewRole = function (id) {
+        $http.get(baseUrl + 'user/super-admin/roles/' + id)
+            .success(function (resp) {
+                $scope.theRole = resp;
+            }).error(function (resp) {
+            alert('数据加载错误');
+        })
+    };
+
+    $scope.viewUpdateRole = function (id) {
+        $http.get(baseUrl + 'user/super-admin/roles/' + id)
+            .success(function (resp) {
+                $scope.updateRole = resp;
+                $scope.getMenusLOV();
+                for(i in resp['menus']){
+                    for(j in $scope.menusLov){
+                        if($scope.menusLov[j]['id'] == resp['menus'][i]['id']){
+                            $scope.menusLov.splice(j,1);
+                        }
+                    }
+                }
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    $scope.addToRight = function (index) {
+        $scope.updateRole['menus'].push($scope.menusLov[index]);
+        $scope.menusLov.splice(index,1);
+    };
+
+    $scope.addToLeft = function (index) {
+        $scope.menusLov.push($scope.updateRole['menus'][index]);
+        $scope.updateRole['menus'].splice(index,1);
+    };
+
+    $scope.update = function () {
+        $http.post(baseUrl + 'user/super-admin/roles/' + $scope.updateRole['id'],$scope.updateRole)
+            .success(function (resp) {
+                $http.post(baseUrl + 'user/super-admin/roles/menus', $scope.updateRole)
+                    .success(function (resp) {
+                        swal("操作成功!", "成功更新!", "success");
+                    }).error(function (resp) {
+                    swal("操作失败!", "出现错误!", "error");
+                });
+                swal("操作成功!", "成功更新!", "success");
+            }).error(function (resp) {
+            swal("操作失败!", "出现错误!", "error");
+        })
+    }
 
 });
 
@@ -983,18 +1057,8 @@ app.controller('userOperationCurdCtrl',function ($scope, $http, Pager, baseUrl,p
     };
     $scope.getUsers(1);
 
-    $scope.getRolesLOV = function () {
-        $http.get(baseUrl + '/lovs/role')
-            .success(function (resp) {
-                $scope.rolesLov = resp;
-            }).error(function (resp) {
-            alert('数据加载失败');
-        })
-    };
-    $scope.getRolesLOV();
-
     $scope.viewUser = function (id) {
-        $http.get(baseUrl + '/user/super-admin/users/' + id)
+        $http.get(baseUrl + 'user/super-admin/users/' + id)
             .success(function (resp) {
                 $scope.theUser = resp;
             }).error(function (resp) {
@@ -1003,16 +1067,24 @@ app.controller('userOperationCurdCtrl',function ($scope, $http, Pager, baseUrl,p
     };
     
     $scope.viewUpdateUser = function (id) {
-        $http.get(baseUrl + '/user/super-admin/users/' + id)
+        $http.get(baseUrl + 'lovs/role')
             .success(function (resp) {
-                $scope.updateUser = resp;
-                for(i in resp['roles']){
-                    for(j in $scope.rolesLov){
-                        if($scope.rolesLov[j]['id'] == resp['roles'][i]['id']){
-                            $scope.rolesLov.splice(j,1);
+                $scope.rolesLov = resp;
+                $scope.showLeftLovs = false;
+                $http.get(baseUrl + 'user/super-admin/users/' + id)
+                    .success(function (resp) {
+                        $scope.updateUser = resp;
+                        for(i in resp['roles']){
+                            for(j in $scope.rolesLov){
+                                if($scope.rolesLov[j]['id'] == resp['roles'][i]['id']){
+                                    $scope.rolesLov.splice(j,1);
+                                }
+                            }
                         }
-                    }
-                }
+                        $scope.showLeftLovs = true;
+                    }).error(function (resp) {
+                    alert('数据加载失败');
+                })
             }).error(function (resp) {
             alert('数据加载失败');
         })
@@ -1029,7 +1101,7 @@ app.controller('userOperationCurdCtrl',function ($scope, $http, Pager, baseUrl,p
     };
 
     $scope.update = function () {
-        $http.post(baseUrl + '/user/super-admin/users/roles',$scope.updateUser)
+        $http.post(baseUrl + 'user/super-admin/users/roles',$scope.updateUser)
             .success(function (resp) {
                 swal("操作成功!", "成功更新!", "success");
             }).error(function (resp) {
