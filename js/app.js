@@ -45,6 +45,10 @@
             templateUrl: "template/role_curd.html",
             controller: "roleCurdCtrl"
         })
+        .when('/user/operation',{
+            templateUrl: "template/user_operation.html",
+            controller: "userOperationCurdCtrl"
+        })
         .otherwise({ redirectTo: "/index" });
     }]);
     

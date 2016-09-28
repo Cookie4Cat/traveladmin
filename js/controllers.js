@@ -968,3 +968,73 @@ app.controller('menuCurdCtrl',function () {
 app.controller('roleCurdCtrl',function () {
 
 });
+
+//用户管理控制器
+app.controller('userOperationCurdCtrl',function ($scope, $http, Pager, baseUrl,pageSize) {
+    
+    $scope.getUsers = function (page) {
+        $http.get(baseUrl + 'user/super-admin/users' + Pager.pageParams(page,pageSize))
+            .success(function (resp) {
+                $scope.users = resp['users'];
+                $scope.pagination = Pager.getPagination(page,pageSize,resp['count']);
+            }).error(function (resp) {
+            alert('数据加载出错');
+        })
+    };
+    $scope.getUsers(1);
+
+    $scope.getRolesLOV = function () {
+        $http.get(baseUrl + '/lovs/role')
+            .success(function (resp) {
+                $scope.rolesLov = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    $scope.getRolesLOV();
+
+    $scope.viewUser = function (id) {
+        $http.get(baseUrl + '/user/super-admin/users/' + id)
+            .success(function (resp) {
+                $scope.theUser = resp;
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+    
+    $scope.viewUpdateUser = function (id) {
+        $http.get(baseUrl + '/user/super-admin/users/' + id)
+            .success(function (resp) {
+                $scope.updateUser = resp;
+                for(i in resp['roles']){
+                    for(j in $scope.rolesLov){
+                        if($scope.rolesLov[j]['id'] == resp['roles'][i]['id']){
+                            $scope.rolesLov.splice(j,1);
+                        }
+                    }
+                }
+            }).error(function (resp) {
+            alert('数据加载失败');
+        })
+    };
+
+    $scope.addToRight = function (index) {
+        $scope.updateUser['roles'].push($scope.rolesLov[index]);
+        $scope.rolesLov.splice(index,1);
+    };
+
+    $scope.addToLeft = function (index) {
+        $scope.rolesLov.push($scope.updateUser['roles'][index]);
+        $scope.updateUser['roles'].splice(index,1);
+    };
+
+    $scope.update = function () {
+        $http.post(baseUrl + '/user/super-admin/users/roles',$scope.updateUser)
+            .success(function (resp) {
+                swal("操作成功!", "成功更新!", "success");
+            }).error(function (resp) {
+            swal("操作失败!", "出现错误!", "error");
+        })
+    }
+    
+});
