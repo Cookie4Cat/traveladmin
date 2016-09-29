@@ -744,6 +744,7 @@ app.controller('canteenCurdCtrl', function ($scope, $http, Pager, baseUrl, baseI
                 for (i in scenicList) {
                     $scope.scenicLOV[scenicList[i]['sid']] = scenicList[i]['scenicName'];
                 }
+                console.log($scope.scenicLOV);
             }).error(function (resp) {
             alert('数据加载出错');
         })

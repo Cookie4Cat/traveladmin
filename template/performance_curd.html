@@ -34,7 +34,6 @@
                             <th>演出名称</th>
                             <th>演出时间段</th>
                             <th>所属景区</th>
-                            <th>演出介绍</th>
                             <th>操作</th>
                         </tr>
                         <tr ng-repeat="row in performances">
@@ -42,7 +41,6 @@
                             <td>{{row['name']}}</td>
                             <td>{{row['timeFrame']}}</td>
                             <td>{{scenicLOV[row['scenicId']]}}</td>
-                            <td>{{row['content']}}</td>
                             <td>
                                 <a ng-click="viewPerformance(row['id'])" class="btn btn-success btn-sm" data-toggle="modal"
                                    data-target="#viewModal">查看</a>
