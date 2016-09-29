@@ -28,8 +28,8 @@
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini" ng-app="adminApp">
-<div class="wrapper">
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper" ng-app="adminApp">
     <!--头部-->
     <header class="main-header">
 
@@ -97,7 +97,7 @@
             </form>
 
             <!-- 左边菜单 -->
-            <ul class="sidebar-menu">
+            <ul class="sidebar-menu" ng-controller="navCtrl" ng-show="showMenu">
                 <li class="header">菜单</li>
                 <li class="treeview">
                     <a>

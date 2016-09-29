@@ -1,6 +1,6 @@
 <div style="background-image: url('img/84007.jpg');height: 700px;">
     <h1 style="padding-top: 160px;text-align: center;color:#ffffff"><b>游客服务后台</b></h1>
-    <p style="text-align: center;font-size: 18px;padding-top: 200px; z-index:2">
+    <p style="text-align: center;font-size: 18px;padding-top: 200px; z-index:2" ng-show="showBtn">
         <button class="btn btn-success" data-toggle="modal" data-target="#loginModal">登录</button>&nbsp;&nbsp;&nbsp;&nbsp;
         <button class="btn btn-info" data-toggle="modal" data-target="#registerModal">注册</button>
     </p>
@@ -20,13 +20,13 @@
                     </div>
                     <div class="box-body">
 
-                        <form action="index.html" method="post">
+                        <form method="post">
                             <div class="form-group has-feedback">
-                                <input type="email" class="form-control" placeholder="Username">
+                                <input type="text" class="form-control" ng-model="user.username" placeholder="Username">
                                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
                                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                             </div>
 
@@ -36,7 +36,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">登录</button>
+                        <button type="button" class="btn btn-success" ng-click="login()" data-dismiss="modal">登录</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
                     </div>
@@ -62,15 +62,15 @@
 
                         <form action="" method="post">
                             <div class="form-group has-feedback">
-                                <input type="text" class="form-control" placeholder="Full name">
+                                <input type="text" class="form-control" ng-model="userName1" placeholder="Full name">
                                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">
-                                <input type="email" class="form-control" placeholder="Email">
+                                <input type="email" class="form-control" ng-model="email" placeholder="Email">
                                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input type="password" class="form-control" ng-model="password1" placeholder="Password">
                                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">
@@ -80,7 +80,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">注册</button>
+                        <button type="button" class="btn btn-success" ng-click="register()" data-dismiss="modal">注册</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
                     </div>

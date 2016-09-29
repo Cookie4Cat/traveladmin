@@ -3,8 +3,33 @@ app.constant('baseUrl', 'http://localhost:8088/v1/');
 app.constant('pageSize', 4);
 app.constant('baseImgUrl', 'http://localhost:8088/');
 
-app.controller('userIndexCtrl', function ($scope) {
-    $scope.test = '俺是测试，希望通过';
+app.controller('userIndexCtrl', function ($scope,$http,baseUrl) {
+
+    $scope.showBtn = true;
+    $scope.login = function () {
+        console.log($scope.user);
+        $http.post(baseUrl + 'user/super-admin/users/login', $scope.user)
+            .success(function (resp) {
+                if(resp!=""){
+                    swal("操作成功!", "完成登陆!", "success");
+                    sessionStorage.setItem('user',JSON.stringify(resp));
+                    $scope.showBtn = false;
+                }else{
+                    swal("操作成功!", "账号或密码错误!", "error");
+                }
+            })
+    };
+    $scope.register = function () {
+        var user = {
+            "username":$scope['userName1'],
+            "password":$scope['password1'],
+            "email":$scope['email']
+        };
+        $http.post(baseUrl + 'user/super-admin/users',user)
+            .success(function (resp) {
+                swal("操作成功!", "完成注册!", "success");
+            })
+    }
 });
 
 //投诉审核控制器
@@ -960,8 +985,81 @@ app.controller('emergencyCurdCtrl', function ($scope, $http, Pager, baseUrl, bas
 });
 
 //菜单控制器
-app.controller('menuCurdCtrl',function () {
+app.controller('menuCurdCtrl',function ($scope, $http, Pager, baseUrl,pageSize) {
+    $scope.getPMenusLOV = function () {
+        $http.get(baseUrl + '/lovs/menu')
+            .success(function (resp) {
+                $scope.pMenusLOV = [];
+                for(i in resp){
+                    if(resp[i]['pid'] == 0){
+                        $scope.pMenusLOV.push(resp[i]);
+                    }
+                }
+                console.log($scope.pMenusLOV);
+            }).error(function (resp) {
+            alert('数据加载出错');
+        })
+    };
+
+    $scope.getPMenusLOV();
+
+    $scope.getMenus = function (page) {
+        $http.get(baseUrl + 'user/super-admin/menus' + Pager.pageParams(page,pageSize))
+            .success(function (resp) {
+                $scope.menus = resp['menuEntities'];
+            }).error(function (resp) {
+            alert('数据加载出错');
+        })
+    };
+
+    $scope.getMenus(1);
+
+    $scope.viewMenu= function (id) {
+        $http.get(baseUrl + 'user/super-admin/menus/' + id)
+            .success(function (resp) {
+                $scope.theMenu = resp;
+            })
+    };
+
+    $scope.addMenu = function () {
+        $http.post(baseUrl + 'user/super-admin/menus', $scope.addMenu)
+            .success(function (resp) {
+                swal("操作成功!", "成功添加!", "success");
+            }).error(function (resp) {
+            swal("操作失败!", "出现错误!", "error");
+        })
+    };
+
+    $scope.update = function () {
+        $http.post(baseUrl + 'user/super-admin/menus/' + $scope.updateMenu['id'], $scope.updateMenu)
+            .success(function (resp) {
+                swal("操作成功!", "成功添加!", "success");
+            }).error(function (resp) {
+            swal("操作失败!", "出现错误!", "error");
+        })
+    };
     
+    $scope.delete = function (id) {
+        swal({
+            title: "您确定删除此项记录?",
+            text: "此项记录将被永久删除",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "继续删除",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            $http.post(baseUrl + 'user/super-admin/menus/' + id + '/delete',null)
+                .success(function (resp) {
+                    swal("操作成功!", "成功删除!", "success");
+                    $scope.getMenus($scope.pagination.current);
+                }).error(function (resp) {
+                swal("操作失败!", "出现错误!", "error");
+            })
+        });
+        
+    }
 });
 
 //角色控制器
@@ -1000,21 +1098,46 @@ app.controller('roleCurdCtrl',function ($scope, $http, Pager, baseUrl,pageSize) 
     };
 
     $scope.viewUpdateRole = function (id) {
-        $http.get(baseUrl + 'user/super-admin/roles/' + id)
+        $http.get(baseUrl + 'lovs/menu')
             .success(function (resp) {
-                $scope.updateRole = resp;
-                $scope.getMenusLOV();
-                for(i in resp['menus']){
-                    for(j in $scope.menusLov){
-                        if($scope.menusLov[j]['id'] == resp['menus'][i]['id']){
-                            $scope.menusLov.splice(j,1);
+                $scope.menusLov = resp;
+                $http.get(baseUrl + 'user/super-admin/roles/' + id)
+                    .success(function (resp) {
+                        $scope.updateRole = resp;
+                        for(i in resp['menus']){
+                            for(j in $scope.menusLov){
+                                if($scope.menusLov[j]['id'] == resp['menus'][i]['id']){
+                                    $scope.menusLov.splice(j,1);
+                                }
+                            }
                         }
-                    }
-                }
+                    }).error(function (resp) {
+                    alert('数据加载失败');
+                })
             }).error(function (resp) {
-            alert('数据加载失败');
+            alert('加载失败');
         })
     };
+
+    $scope.viewAdd = function () {
+        $scope.updateRole = {};
+        $scope.updateRole['menus'] = [];
+    };
+
+    $scope.add = function () {
+        var role = {"name":$scope.updateRole['name'],"description":$scope.updateRole['description']};
+        $http.post(baseUrl + 'user/super-admin/roles',role)
+            .success(function (resp) {
+                $scope.updateRole.id = resp['id'];
+                $http.post(baseUrl + 'user/super-admin/roles/menus', $scope.updateRole)
+                    .success(function (resp) {
+                        swal("操作成功!", "成功更新!", "success");
+                    }).error(function (resp) {
+                    swal("操作失败!", "出现错误!", "error");
+                });
+            })
+    };
+
 
     $scope.addToRight = function (index) {
         $scope.updateRole['menus'].push($scope.menusLov[index]);
@@ -1039,8 +1162,28 @@ app.controller('roleCurdCtrl',function ($scope, $http, Pager, baseUrl,pageSize) 
             }).error(function (resp) {
             swal("操作失败!", "出现错误!", "error");
         })
-    }
+    };
+    $scope.delete = function (id) {
+        swal({
+            title: "您确定删除此项记录?",
+            text: "此项记录将被永久删除",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "继续删除",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            $http.post(baseUrl + 'user/super-admin/roles/' + id + '/delete', null)
+                .success(function (resp) {
+                    swal("操作成功!", "成功删除!", "success");
+                    $scope.getRoles($scope.pagination.current);
+                }).error(function (resp) {
+                swal("操作失败!", "出现错误!", "error");
+            });
+        });
 
+    }
 });
 
 //用户管理控制器
@@ -1110,3 +1253,30 @@ app.controller('userOperationCurdCtrl',function ($scope, $http, Pager, baseUrl,p
     }
     
 });
+
+//菜单控制
+    app.controller('navCtrl',function ($scope, $http, $interval) {
+
+
+        $interval(renderMenu,1000);
+        var isDone = false;
+        $scope.showMenu = false;
+        function renderMenu() {
+            if(localStorage.getItem('user') &&!isDone){
+                var user = JSON.parse(sessionStorage.getItem('user'));
+                if(user!=null){
+                    getMenus(user['id']);
+                    isDone = true;
+                    $scope.showMenu = true;
+                }
+            }
+        }
+
+        function getMenus(userId) {
+            $http.get('http://localhost:8088/v1/user/super-admin/users/' + userId + '/menus')
+                .success(function (resp) {
+                    console.log(resp);
+                    $scope.menus = resp;
+                })
+        }
+    });
